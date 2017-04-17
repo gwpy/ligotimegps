@@ -16,7 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with ligotimegps.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
+import sys
+
+if sys.version < '2.7':
+    import unittest2 as unittest
+else:
+    import unittest
 
 from six import PY2
 
