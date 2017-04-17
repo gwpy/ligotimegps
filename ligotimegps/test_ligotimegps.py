@@ -120,6 +120,7 @@ class LIGOTimeGPSTests(unittest.TestCase):
         self.assertEqual(h, 435)
 
     def test_round(self):
+        # test round (down) to int
         a = LIGOTimeGPS(12345, 67890)
         b = round(a)
         if PY2:
@@ -127,6 +128,9 @@ class LIGOTimeGPSTests(unittest.TestCase):
         else:
             self.assertIsInstance(b, LIGOTimeGPS)
         self.assertEqual(b, 12345)
+        # test round up
+        self.assertEqual(round(LIGOTimeGPS(12345, 500000000)), 12346)
+        # test round with decimal point
         b = round(a, 1)
         if not PY2:
             self.assertIsInstance(b, LIGOTimeGPS)
