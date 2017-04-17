@@ -197,6 +197,14 @@ class LIGOTimeGPS(object):
 
     # -- arithmetic -----------------------------
 
+    def __round__(self, n=0):
+        if n == 0 and self.nanoseconds >= 5e8:
+            return type(self)(self._seconds+1)
+        elif n == 0:
+            return type(self)(self._seconds)
+        else:
+            return type(self)(self._seconds, round(self._nanoseconds, -9 + n))
+
     def __add__(self, other):
         """Add a value to a `LIGOTimeGPS`
 

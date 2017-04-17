@@ -114,6 +114,20 @@ class LIGOTimeGPSTests(unittest.TestCase):
         self.assertIsInstance(h, int)
         self.assertEqual(h, 435)
 
+    def test_round(self):
+        a = LIGOTimeGPS(12345, 67890)
+        b = round(a)
+        if PY2:
+            self.assertIsInstance(b, float)
+        else:
+            self.assertIsInstance(b, LIGOTimeGPS)
+        self.assertEqual(b, 12345)
+        b = round(a, 1)
+        if not PY2:
+            self.assertIsInstance(b, LIGOTimeGPS)
+        self.assertEqual(b, 12345.0)
+        self.assertEqual(round(a, 7), LIGOTimeGPS(12345, 67900))
+
     def test_add(self):
         a = LIGOTimeGPS(1) + LIGOTimeGPS(2)
         self.assertIsInstance(a, LIGOTimeGPS)
