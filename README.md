@@ -14,3 +14,9 @@ The code provided here is much slower than the C-implementation provided by LAL,
 >>> print(t)
 12345.00006789
 ```
+
+## Project status
+
+[![PyPI version](https://badge.fury.io/py/ligotimegps.svg)](http://badge.fury.io/py/ligotimegps) 
+[![Build Status](https://travis-ci.org/lscsoft/ligotimegps.svg?branch=master)](https://travis-ci.org/lscsoft/ligotimegps)
+[![Coverage Status](https://coveralls.io/repos/github/lscsoft/ligotimegps/badge.svg?branch=master)](https://coveralls.io/github/lscsoft/ligotimegps?branch=master)
