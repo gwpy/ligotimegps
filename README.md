@@ -6,6 +6,12 @@ This module is primarily for use as a drop-in replacement for the 'offical' `lal
 
 The code provided here is much slower than the C-implementation provided by LAL, so if you really care about performance, don't use this module.
 
+## How to install
+
+```bash
+pip install ligotimegps
+```
+
 ## How to use
 
 ```python
