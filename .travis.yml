@@ -16,3 +16,13 @@ script:
 after_success:
   - coveralls
 cache: pip
+deploy:
+  - provider: pypi
+    user: duncanmmacleod
+    password:
+      secure: AWHqZruQMW9uHIhXLlKwgdfWBHZIgwLtvkP7D+al4zYG/wSOvZDTT7ZsxOhFogYxIXWzwcBIPYgUGplkMOlb+N0Wl45OPL6U2tN5EtUEtWnTd/OxrDzA/DJJbgdfy4VqFSj0fY7FTBNJCeCciZ+TmtBrcWSFbHorrLyF5oOW7VQ=
+    on:
+      branch: master
+      tags: true
+      distributions: sdist bdist_wheel
+      repo: lscsoft/ligotimegps
