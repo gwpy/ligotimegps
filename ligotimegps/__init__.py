@@ -289,7 +289,7 @@ class LIGOTimeGPS(object):
     # multiplication is commutative
     __rmul__ = __mul__
 
-    def __div__(self, other):
+    def __truediv__(self, other):
         """Divide a `LIGOTimeGPS` by a number
 
         Examples
@@ -304,6 +304,8 @@ class LIGOTimeGPS(object):
             if abs(residual) <= 0.5e-9:
                 break
         return quotient
+
+    __div__ = __truediv__
 
     def __mod__(self, other):
         """Compute the remainder when a `LIGOTimeGPS` is divided by a number
