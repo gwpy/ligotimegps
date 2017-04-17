@@ -21,6 +21,7 @@ deploy:
     user: duncanmmacleod
     password:
       secure: AWHqZruQMW9uHIhXLlKwgdfWBHZIgwLtvkP7D+al4zYG/wSOvZDTT7ZsxOhFogYxIXWzwcBIPYgUGplkMOlb+N0Wl45OPL6U2tN5EtUEtWnTd/OxrDzA/DJJbgdfy4VqFSj0fY7FTBNJCeCciZ+TmtBrcWSFbHorrLyF5oOW7VQ=
+      secure: yTbJ/U2oQxtrOmmrTlHg7aU0jJtFbJwHfU6wd3+zKcddNF4U4HQATji6BeP5WwnijRvGvq/d+341NSDUpa0tMYLIS6PUPAZHJeueL8GiVl+UAeA4IT9LF6qi1tRQHGXTTuvg1N7gyJM2b2IhhZB1Rjevjr5HzRPBC/yVzk0pmpij96KRiMmmY68NGskGBiMU7yPjwm1dExXhNrWnzQRdSKzNEX0dl9JQrKqz/VBYrfT9zFsdKRpYGbScssgd/omZ6UAMowi4pWqBPxxl1aVMSRyCn9soL13J+sc3TH9CqOD5glu6KWBGSJdvQ4mWdflqq5f9l1ARvUDv4cuJ3HE/89NssMtrORZgcMdyTos9mN+6BQg8se+nfWIxcHZuQPpG9y+wSx/HyZdzrgY3DuOyh3c8BP1fbAaC1FS+9cLO8PN+qA8I7JbQjd5q2vRbNeZs9qeN0i5NE22tR/nUVeqgbn53GdnImwO/kmpRHvsyrOZsPWCiDko/aDMO99iWNzOflMJVgtlBZUn0Iiq6k4HNZwZ2/bymLwFbjdSxqUjsYQEwKqgfq0OmZlsT9U9qRyOZnqBQl8a+AfAaTFE7fNFZ573YqA44D/4StT6/KTOvliL7g6PvX77VQrguatkCsySviuOtQZ+FWqhTf9VsFWcDUFiBQ6fCV/G+of6ZSflRlzM=
     on:
       branch: master
       tags: true
