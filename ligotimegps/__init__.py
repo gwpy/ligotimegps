@@ -18,7 +18,12 @@
 # along with ligotimegps.  If not, see <http://www.gnu.org/licenses/>.
 
 from math import (modf, log)
-from functools import (total_ordering, wraps)
+from functools import wraps
+
+try:
+    from functools import total_ordering
+except ImportError:  # python 2.6
+    from total_ordering import total_ordering
 
 import six
 

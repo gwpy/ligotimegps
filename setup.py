@@ -20,11 +20,17 @@
 """Setup the ligotimegps package
 """
 
+import sys
 from setuptools import setup
 
 import versioneer
 
 __version__ = versioneer.get_version()
+
+install_requires = ['six']
+
+if sys.version < '2.7':
+    install_requires.append('total-ordering')
 
 # run setup
 setup(name='ligotimegps',
@@ -36,7 +42,7 @@ setup(name='ligotimegps',
       license='GPLv3',
       cmdclass=versioneer.get_cmdclass(),
       setup_requires=['pytest-runner'],
-      install_requires=['six'],
+      install_requires=install_requires,
       tests_require=['pytest>=2.8'],
       classifiers=[
           'Development Status :: 3 - Alpha',
