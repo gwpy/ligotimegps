@@ -88,14 +88,14 @@ class LIGOTimeGPS(object):
         elif not isinstance(seconds, six.integer_types):
             if isinstance(seconds, (six.binary_type, six.text_type)):
                 try:
-                    seconds = str(Decimal(seconds).canonical())
+                    seconds = str(Decimal(seconds))
                 except ArithmeticError:
                     raise TypeError("invalid literal for LIGOTimeGPS(): %s"
                                     % seconds)
-                sign = -1 if seconds.lstrip().startswith("-") else +1
+                sign = -1 if seconds.startswith("-") else +1
                 if "." in seconds:
                     seconds, ns = seconds.split(".")
-                    ns = round(sign * float("." + ns) * 1e9)
+                    ns = sign * int(ns.ljust(9, '0'))
                 else:
                     ns = 0
                 seconds = int(seconds)
