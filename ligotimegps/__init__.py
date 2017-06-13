@@ -19,6 +19,7 @@
 
 from math import (modf, log)
 from functools import wraps
+from decimal import Decimal
 
 try:
     from functools import total_ordering
@@ -86,17 +87,18 @@ class LIGOTimeGPS(object):
             nanoseconds += ns * 1e9
         elif not isinstance(seconds, six.integer_types):
             if isinstance(seconds, (six.binary_type, six.text_type)):
-                sign = -1 if seconds.lstrip().startswith("-") else +1
                 try:
-                    if "." in seconds:
-                        seconds, ns = seconds.split(".")
-                        ns = round(sign * float("." + ns) * 1e9)
-                    else:
-                        ns = 0
-                    seconds = int(seconds)
-                except:
+                    seconds = str(Decimal(seconds).canonical())
+                except ArithmeticError:
                     raise TypeError("invalid literal for LIGOTimeGPS(): %s"
                                     % seconds)
+                sign = -1 if seconds.lstrip().startswith("-") else +1
+                if "." in seconds:
+                    seconds, ns = seconds.split(".")
+                    ns = round(sign * float("." + ns) * 1e9)
+                else:
+                    ns = 0
+                seconds = int(seconds)
                 nanoseconds += ns
             elif (hasattr(seconds, "gpsSeconds") and
                   hasattr(seconds, "gpsNanoSeconds")):  # lal.LIGOTimeGPS

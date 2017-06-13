@@ -52,6 +52,9 @@ class LIGOTimeGPSTests(unittest.TestCase):
         a = LIGOTimeGPS("1", "234")
         self.assertEqual(a.gpsSeconds, 1)
         self.assertEqual(a.gpsNanoSeconds, 234)
+        a = LIGOTimeGPS("1.2345678987654321e9")
+        self.assertEqual(a.gpsSeconds, 1234567898)
+        self.assertEqual(a.gpsNanoSeconds, 765432100)
         # check errors
         self.assertRaises(TypeError, LIGOTimeGPS, 'test')
         self.assertRaises(TypeError, LIGOTimeGPS, None)
