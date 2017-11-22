@@ -54,7 +54,7 @@ setup(name='ligotimegps',
       install_requires=install_requires,
       tests_require=tests_require,
       classifiers=[
-          'Development Status :: 3 - Alpha',
+          'Development Status :: 5 - Production/Stable',
           'Programming Language :: Python',
           'Programming Language :: Python :: 2.6',
           'Programming Language :: Python :: 2.7',
