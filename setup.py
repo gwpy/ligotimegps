@@ -27,12 +27,19 @@ import versioneer
 
 __version__ = versioneer.get_version()
 
-install_requires = ['six']
-tests_require = ['pytest>=2.8']
+# setup dependencies
+if set(('pytest', 'test', 'prt')).intersection(sys.argv):
+    setup_requires = ['pytest_runner']
+else:
+    setup_requires = []
 
+# runtime dependencies
+install_requires = ['six']
 if sys.version < '2.7':
     install_requires.append('total-ordering')
-    tests_require.append('unittest2')
+
+# test deendencies
+tests_require = ['pytest>=2.8']
 
 # run setup
 setup(name='ligotimegps',
@@ -43,11 +50,11 @@ setup(name='ligotimegps',
       author_email='duncan.macleod@ligo.org',
       license='GPLv3',
       cmdclass=versioneer.get_cmdclass(),
-      setup_requires=['pytest-runner'],
+      setup_requires=setup_requires,
       install_requires=install_requires,
       tests_require=tests_require,
       classifiers=[
-          'Development Status :: 3 - Alpha',
+          'Development Status :: 5 - Production/Stable',
           'Programming Language :: Python',
           'Programming Language :: Python :: 2.6',
           'Programming Language :: Python :: 2.7',
@@ -63,4 +70,4 @@ setup(name='ligotimegps',
           'Topic :: Scientific/Engineering :: Physics',
           'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
       ],
-      )
+)
