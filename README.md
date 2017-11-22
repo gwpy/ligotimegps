@@ -1,3 +1,8 @@
+[![PyPI version](https://badge.fury.io/py/ligotimegps.svg)](http://badge.fury.io/py/ligotimegps) 
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/ligotimegps.svg)](https://travis-ci.org/lscsoft/ligotimegps)
+[![Build Status](https://travis-ci.org/lscsoft/ligotimegps.svg?branch=master)](https://travis-ci.org/lscsoft/ligotimegps)
+[![Coverage Status](https://coveralls.io/repos/github/lscsoft/ligotimegps/badge.svg?branch=master)](https://coveralls.io/github/lscsoft/ligotimegps?branch=master)
+
 # `ligotimegps`
 
 This module provides a pure-python version of the `LIGOTimeGPS` class, used to represent GPS times (number of seconds elapsed since GPS epoch) with nanoseconds precision.
@@ -21,8 +26,3 @@ pip install ligotimegps
 12345.00006789
 ```
 
-## Project status
-
-[![PyPI version](https://badge.fury.io/py/ligotimegps.svg)](http://badge.fury.io/py/ligotimegps) 
-[![Build Status](https://travis-ci.org/lscsoft/ligotimegps.svg?branch=master)](https://travis-ci.org/lscsoft/ligotimegps)
-[![Coverage Status](https://coveralls.io/repos/github/lscsoft/ligotimegps/badge.svg?branch=master)](https://coveralls.io/github/lscsoft/ligotimegps?branch=master)
