@@ -28,7 +28,7 @@ import versioneer
 __version__ = versioneer.get_version()
 
 # setup dependencies
-if {'pytest', 'test', 'prt'}.intersection(sys.argv):
+if set(('pytest', 'test', 'prt')).intersection(sys.argv):
     setup_requires = ['pytest_runner']
 else:
     setup_requires = []
