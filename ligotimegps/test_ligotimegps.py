@@ -251,3 +251,10 @@ def test_abs():
     a = LIGOTimeGPS(123, 456789)
     assert abs(a) == a
     assert abs(-a) == a
+
+
+def test_infinity():
+    assert LIGOTimeGPS(1) < float('inf')
+    assert LIGOTimeGPS(1) > -float('inf')
+    assert LIGOTimeGPS(1) != float('inf')
+    assert LIGOTimeGPS(1) != -float('inf')
