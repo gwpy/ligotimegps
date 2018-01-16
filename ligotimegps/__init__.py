@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with ligotimegps.  If not, see <http://www.gnu.org/licenses/>.
 
-from math import (modf, log)
+from math import (modf, log, isinf)
 from functools import wraps
 from decimal import Decimal
 
@@ -171,6 +171,8 @@ class LIGOTimeGPS(object):
     # -- comparison -----------------------------
 
     def __eq__(self, other):
+        if isinf(other):
+            return False
         if not isinstance(other, LIGOTimeGPS):
             other = LIGOTimeGPS(other)
         return (self._seconds == other._seconds and
@@ -180,6 +182,10 @@ class LIGOTimeGPS(object):
         return not (self == other)
 
     def __lt__(self, other):
+        if isinf(other) and other > 0:  # +infinity
+            return True
+        if isinf(other):  # -infinity
+            return False
         if not isinstance(other, LIGOTimeGPS):
             other = LIGOTimeGPS(other)
         if self._seconds < other._seconds:
