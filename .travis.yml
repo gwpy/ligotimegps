@@ -9,6 +9,8 @@ python:
   - '3.5'
   - '3.6'
   - 'nightly'
+before_install:
+  - pip install --upgrade pip setuptools
 install:
   - pip install .
 before_script:
