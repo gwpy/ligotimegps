@@ -38,16 +38,24 @@ install_requires = ['six']
 if sys.version < '2.7':
     install_requires.append('total-ordering')
 
-# test deendencies
+# test dependencies
 tests_require = ['pytest>=2.8']
+
+# read long description
+with open('README.md', 'rb') as f:
+    longdesc = f.read().decode().strip()
 
 # run setup
 setup(name='ligotimegps',
       version=__version__,
       packages=['ligotimegps'],
       description="A pure-python version of lal.LIGOTimeGPS",
+      long_description=longdesc,
+      long_description_content_type='text/markdown',
       author='Duncan Macleod',
       author_email='duncan.macleod@ligo.org',
+      keywords="gravitational-waves ligo lal",
+      url="https://github.com/gwpy/ligotimegps",
       license='GPLv3',
       cmdclass=versioneer.get_cmdclass(),
       setup_requires=setup_requires,
