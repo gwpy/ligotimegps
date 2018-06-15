@@ -1,8 +1,8 @@
-[![PyPI version](https://badge.fury.io/py/ligotimegps.svg)](http://badge.fury.io/py/ligotimegps) 
+[![PyPI version](https://badge.fury.io/py/ligotimegps.svg)](http://badge.fury.io/py/ligotimegps)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1180873.svg)](https://doi.org/10.5281/zenodo.1180873)
-[![Supported Python versions](https://img.shields.io/pypi/pyversions/ligotimegps.svg)](https://travis-ci.org/lscsoft/ligotimegps)
-[![Build Status](https://travis-ci.org/lscsoft/ligotimegps.svg?branch=master)](https://travis-ci.org/lscsoft/ligotimegps)
-[![Coverage Status](https://coveralls.io/repos/github/lscsoft/ligotimegps/badge.svg?branch=master)](https://coveralls.io/github/lscsoft/ligotimegps?branch=master)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/ligotimegps.svg)](https://travis-ci.org/gwpy/ligotimegps)
+[![Build Status](https://travis-ci.org/gwpy/ligotimegps.svg?branch=master)](https://travis-ci.org/gwpy/ligotimegps)
+[![Coverage Status](https://coveralls.io/repos/github/gwpy/ligotimegps/badge.svg?branch=master)](https://coveralls.io/github/gwpy/ligotimegps?branch=master)
 
 This module provides a pure-python version of the `LIGOTimeGPS` class, used to represent GPS times (number of seconds elapsed since GPS epoch) with nanoseconds precision.
 
