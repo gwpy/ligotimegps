@@ -42,7 +42,7 @@ if sys.version < '2.7':
 tests_require = ['pytest>=2.8']
 
 # read long description
-with open('README.rst', 'rb') as f:
+with open('README.md', 'rb') as f:
     longdesc = f.read().decode().strip()
 
 # run setup
