@@ -33,4 +33,4 @@ deploy:
     on:
       branch: master
       tags: true
-      repo: lscsoft/ligotimegps
+      repo: gwpy/ligotimegps
