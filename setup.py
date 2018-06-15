@@ -38,7 +38,7 @@ install_requires = ['six']
 if sys.version < '2.7':
     install_requires.append('total-ordering')
 
-# test deendencies
+# test dependencies
 tests_require = ['pytest>=2.8']
 
 # read long description
