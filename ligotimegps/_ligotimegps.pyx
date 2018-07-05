@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with ligotimegps.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 from decimal import Decimal
 from math import modf
 from numbers import (Integral, Number)
@@ -167,7 +166,6 @@ cdef class LIGOTimeGPS:
         >>> LIGOTimeGPS(100.5).ns()
         100500000000
         """
-        print(sys.maxint)
         cdef long TEN_TO_9 = 1000000000
         print(type(self.gpsSeconds), self.gpsSeconds)
         cdef long a = self.gpsSeconds * TEN_TO_9
