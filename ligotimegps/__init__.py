@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with ligotimegps.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 from math import (modf, log, isinf)
 from functools import wraps
 from decimal import Decimal
@@ -27,6 +28,13 @@ except ImportError:  # python 2.6
     from total_ordering import total_ordering
 
 import six
+
+if six.PY2 and os.name == 'nt':  # use numpy for long int on python 2.7
+    from numpy import long as long_
+elif six.PY2:  # python 2.7 builtin long
+    long_ = long
+else:  # python >= 3 builtin int is long
+    long_ = int
 
 from ._version import get_versions
 __version__ = get_versions()['version']
@@ -161,12 +169,15 @@ class LIGOTimeGPS(object):
     def ns(self):
         """Convert a `LIGOTimeGPS` to a count of nanoseconds as an int
 
+        When running python2.7 on Windows this is returned as `numpy.long`
+        to guarantee long-ness.
+
         Examples
         --------
         >>> LIGOTimeGPS(100.5).ns()
         100500000000
         """
-        return self._seconds * 1000000000 + self._nanoseconds
+        return long_(self._seconds) * 1000000000 + self._nanoseconds
 
     # -- comparison -----------------------------
 

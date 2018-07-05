@@ -20,6 +20,7 @@
 """Setup the ligotimegps package
 """
 
+import os
 import sys
 from setuptools import setup
 
@@ -37,6 +38,8 @@ else:
 install_requires = ['six']
 if sys.version < '2.7':
     install_requires.append('total-ordering')
+if os.name == 'nt' and sys.version < '3.0':
+    install_requires.append('numpy')
 
 # test dependencies
 tests_require = ['pytest>=2.8']
