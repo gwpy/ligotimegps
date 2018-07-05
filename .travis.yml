@@ -10,7 +10,7 @@ python:
   - '3.6'
   - 'nightly'
 before_install:
-  - pip install --upgrade pip setuptools
+  - pip install --upgrade pip setuptools Cython
 install:
   - pip install .
 before_script:
@@ -33,5 +33,4 @@ deploy:
     on:
       branch: master
       tags: true
-      python: '3.6'
       repo: gwpy/ligotimegps

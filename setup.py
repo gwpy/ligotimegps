@@ -20,23 +20,30 @@
 """Setup the ligotimegps package
 """
 
+import os.path
 import sys
-from setuptools import setup
+
+from setuptools import (setup, Extension)
+
+from Cython.Build import cythonize
 
 import versioneer
 
 __version__ = versioneer.get_version()
 
 # setup dependencies
+setup_requires = [
+    'setuptools',
+    'Cython',
+]
 if set(('pytest', 'test', 'prt')).intersection(sys.argv):
-    setup_requires = ['pytest_runner']
-else:
-    setup_requires = []
+    setup_requires.append('pytest_runner')
 
 # runtime dependencies
-install_requires = ['six']
-if sys.version < '2.7':
-    install_requires.append('total-ordering')
+install_requires = [
+    'six',
+    'Cython',
+]
 
 # test dependencies
 tests_require = ['pytest>=2.8']
@@ -44,6 +51,12 @@ tests_require = ['pytest>=2.8']
 # read long description
 with open('README.md', 'rb') as f:
     longdesc = f.read().decode().strip()
+
+# build extensions
+extensions = [
+    Extension('ligotimegps._ligotimegps',
+              sources=[os.path.join('ligotimegps', '_ligotimegps.pyx')])
+]
 
 # run setup
 setup(name='ligotimegps',
@@ -61,6 +74,7 @@ setup(name='ligotimegps',
       setup_requires=setup_requires,
       install_requires=install_requires,
       tests_require=tests_require,
+      ext_modules=cythonize(extensions),
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Programming Language :: Python',
