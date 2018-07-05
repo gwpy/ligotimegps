@@ -20,6 +20,7 @@
 """Setup the ligotimegps package
 """
 
+import os.path
 import sys
 
 from setuptools import (setup, Extension)
@@ -49,7 +50,7 @@ with open('README.md', 'rb') as f:
 # build extensions
 extensions = [
     Extension('ligotimegps._ligotimegps',
-              sources=['ligotimegps/_ligotimegps.pyx'])
+              sources=[os.path.join('ligotimegps', '_ligotimegps.pyx')])
 ]
 
 # run setup
