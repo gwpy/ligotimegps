@@ -344,7 +344,9 @@ cdef class LIGOTimeGPS:
                 break
         return quotient
 
-    __div__ = __truediv__
+    if six.PY2:
+        def __div__(self, other):
+            return self.__truediv__(other)
 
     def __mod__(self, other):
         """Compute the remainder when a `LIGOTimeGPS` is divided by a number
