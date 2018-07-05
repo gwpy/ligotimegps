@@ -32,13 +32,18 @@ import versioneer
 __version__ = versioneer.get_version()
 
 # setup dependencies
+setup_requires = [
+    'setuptools',
+    'Cython',
+]
 if set(('pytest', 'test', 'prt')).intersection(sys.argv):
-    setup_requires = ['pytest_runner']
-else:
-    setup_requires = []
+    setup_requires.append('pytest_runner')
 
 # runtime dependencies
-install_requires = ['six']
+install_requires = [
+    'six',
+    'Cython',
+]
 
 # test dependencies
 tests_require = ['pytest>=2.8']
