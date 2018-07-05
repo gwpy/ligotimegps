@@ -21,7 +21,10 @@
 """
 
 import sys
-from setuptools import setup
+
+from setuptools import (setup, Extension)
+
+from Cython.Build import cythonize
 
 import versioneer
 
@@ -35,8 +38,6 @@ else:
 
 # runtime dependencies
 install_requires = ['six']
-if sys.version < '2.7':
-    install_requires.append('total-ordering')
 
 # test dependencies
 tests_require = ['pytest>=2.8']
@@ -44,6 +45,12 @@ tests_require = ['pytest>=2.8']
 # read long description
 with open('README.md', 'rb') as f:
     longdesc = f.read().decode().strip()
+
+# build extensions
+extensions = [
+    Extension('ligotimegps._ligotimegps',
+              sources=['ligotimegps/_ligotimegps.pyx'])
+]
 
 # run setup
 setup(name='ligotimegps',
@@ -61,6 +68,7 @@ setup(name='ligotimegps',
       setup_requires=setup_requires,
       install_requires=install_requires,
       tests_require=tests_require,
+      ext_modules=cythonize(extensions),
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Programming Language :: Python',

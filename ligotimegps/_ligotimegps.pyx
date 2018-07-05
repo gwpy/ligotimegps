@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright Kipp Cannon 2010-2016
+# cython: cdivision=True
 # Copyright Duncan Macleod 2017
 #
 # This file is part of ligotimegps.
@@ -17,26 +17,16 @@
 # You should have received a copy of the GNU General Public License
 # along with ligotimegps.  If not, see <http://www.gnu.org/licenses/>.
 
-from math import (modf, log, isinf)
-from functools import wraps
 from decimal import Decimal
+from math import modf
+from numbers import (Integral, Number)
 
-try:
-    from functools import total_ordering
-except ImportError:  # python 2.6
-    from total_ordering import total_ordering
+from libc.math cimport (log2, isinf)
 
 import six
 
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
 
-__all__ = ['LIGOTimeGPS']
-
-
-@total_ordering
-class LIGOTimeGPS(object):
+cdef class LIGOTimeGPS:
     """An object for storing times with nanosecond resolution
 
     Internally the time is represented as a signed integer `gpsSeconds` part
@@ -76,16 +66,21 @@ class LIGOTimeGPS(object):
     >>> LIGOTimeGPS("-1.2")
     LIGOTimeGPS(-2, 800000000)
     """
+    cdef readonly long gpsSeconds
+    cdef readonly int gpsNanoSeconds
+
     def __init__(self, seconds, nanoseconds=0):
         """Create a LIGOTimeGPS instance
         """
-        if not isinstance(nanoseconds, (float, int)):
+        if not isinstance(nanoseconds, Number):
             nanoseconds = float(nanoseconds)
-        if isinstance(seconds, float):
+        if isinstance(seconds, float) and seconds.is_integer():
+            seconds = int(seconds)
+        elif isinstance(seconds, float):
             ns, seconds = modf(seconds)
             seconds = int(seconds)
             nanoseconds += ns * 1e9
-        elif not isinstance(seconds, six.integer_types):
+        if not isinstance(seconds, Integral):
             if isinstance(seconds, (six.binary_type, six.text_type)):
                 try:
                     seconds = str(Decimal(seconds))
@@ -106,27 +101,32 @@ class LIGOTimeGPS(object):
                 seconds = seconds.gpsSeconds
             else:
                 raise TypeError(seconds)
-        self._seconds = seconds + int(nanoseconds // 1000000000)
-        self._nanoseconds = int(nanoseconds % 1000000000)
 
-    # define read-only properties to access each part
-    seconds = gpsSeconds = property(lambda self: self._seconds)
-    nanoseconds = gpsNanoSeconds = property(lambda self: self._nanoseconds)
+        self.gpsSeconds = seconds + int(nanoseconds // 1000000000)
+        self.gpsNanoSeconds = int(nanoseconds % 1000000000)
+
+    @property
+    def seconds(self):
+        return self.gpsSeconds
+
+    @property
+    def nanoseconds(self):
+        return self.gpsNanoSeconds
 
     # -- representations ------------------------
 
     def __repr__(self):
-        return "LIGOTimeGPS(%d, %u)" % (self._seconds, self._nanoseconds)
+        return "LIGOTimeGPS(%d, %u)" % (self.gpsSeconds, self.gpsNanoSeconds)
 
     def __str__(self):
         """Return an ASCII string representation of a `LIGOTimeGPS`
         """
-        if (self._seconds >= 0) or (self._nanoseconds == 0):
-            s = "%d.%09u" % (self._seconds, self._nanoseconds)
-        elif self._seconds < -1:
-            s = "%d.%09u" % (self._seconds + 1, 1000000000 - self._nanoseconds)
+        if (self.gpsSeconds >= 0) or (self.gpsNanoSeconds == 0):
+            s = "%d.%09u" % (self.gpsSeconds, self.gpsNanoSeconds)
+        elif self.gpsSeconds < -1:
+            s = "%d.%09u" % (self.gpsSeconds + 1, 1000000000 - self.gpsNanoSeconds)
         else:
-            s = "-0.%09u" % (1000000000 - self._nanoseconds)
+            s = "-0.%09u" % (1000000000 - self.gpsNanoSeconds)
         return s.rstrip("0").rstrip(".")
 
     def __float__(self):
@@ -137,7 +137,7 @@ class LIGOTimeGPS(object):
         >>> float(LIGOTimeGPS(100.5))
         100.5
         """
-        return self._seconds + self._nanoseconds * 1e-9
+        return self.gpsSeconds + self.gpsNanoSeconds * 1e-9
 
     def __int__(self):
         """Return the integer part (seconds) of a `LIGOTimeGPS` as an int
@@ -147,7 +147,7 @@ class LIGOTimeGPS(object):
         >>> int(LIGOTimeGPS(100.5))
         100
         """
-        return self._seconds
+        return self.gpsSeconds
 
     if six.PY2:
         def __long__(self):
@@ -156,7 +156,7 @@ class LIGOTimeGPS(object):
             >>> long(LIGOTimeGPS(100.5))
             100L
             """
-            return long(self._seconds)
+            return long(self.gpsSeconds)
 
     def ns(self):
         """Convert a `LIGOTimeGPS` to a count of nanoseconds as an int
@@ -166,7 +166,7 @@ class LIGOTimeGPS(object):
         >>> LIGOTimeGPS(100.5).ns()
         100500000000
         """
-        return self._seconds * 1000000000 + self._nanoseconds
+        return int(self.gpsSeconds * 1000000000 + self.gpsNanoSeconds)
 
     # -- comparison -----------------------------
 
@@ -175,28 +175,58 @@ class LIGOTimeGPS(object):
             return False
         if not isinstance(other, LIGOTimeGPS):
             other = LIGOTimeGPS(other)
-        return (self._seconds == other._seconds and
-                self._nanoseconds == other._nanoseconds)
+        return (self.gpsSeconds == other.gpsSeconds and
+                self.gpsNanoSeconds == other.gpsNanoSeconds)
 
     def __ne__(self, other):
         return not (self == other)
 
     def __lt__(self, other):
-        if isinf(other) and other > 0:  # +infinity
-            return True
-        if isinf(other):  # -infinity
-            return False
+        cdef int isinf_ = isinf(other)
+        if isinf_:
+            return other > 0
         if not isinstance(other, LIGOTimeGPS):
             other = LIGOTimeGPS(other)
-        if self._seconds < other._seconds:
+        if self.gpsSeconds < other.gpsSeconds:
             return True
-        elif (self._seconds == other._seconds and
-              self._nanoseconds < other._nanoseconds):
+        return (self.gpsSeconds == other.gpsSeconds and
+                self.gpsNanoSeconds < other.gpsNanoSeconds)
+
+    def __le__(self, other):
+        cdef int isinf_ = isinf(other)
+        if isinf_:
+            return other > 0
+        if not isinstance(other, LIGOTimeGPS):
+            other = LIGOTimeGPS(other)
+        if self.gpsSeconds < other.gpsSeconds:
             return True
-        return False
+        return (self.gpsSeconds == other.gpsSeconds and
+                self.gpsNanoSeconds <= other.gpsNanoSeconds)
+
+    def __ge__(self, other):
+        cdef int isinf_ = isinf(other)
+        if isinf_:
+            return other < 0
+        if not isinstance(other, LIGOTimeGPS):
+            other = LIGOTimeGPS(other)
+        if self.gpsSeconds > other.gpsSeconds:
+            return True
+        return (self.gpsSeconds == other.gpsSeconds and
+                self.gpsNanoSeconds >= other.gpsNanoSeconds)
+
+    def __gt__(self, other):
+        cdef int isinf_ = isinf(other)
+        if isinf_:
+            return other < 0
+        if not isinstance(other, LIGOTimeGPS):
+            other = LIGOTimeGPS(other)
+        if self.gpsSeconds > other.gpsSeconds:
+            return True
+        return (self.gpsSeconds == other.gpsSeconds and
+                self.gpsNanoSeconds > other.gpsNanoSeconds)
 
     def __hash__(self):
-        return self._seconds ^ self._nanoseconds
+        return self.gpsSeconds ^ self.gpsNanoSeconds
 
     def __nonzero__(self):
         """Return True if the `LIGOTimeGPS` is nonzero
@@ -206,17 +236,16 @@ class LIGOTimeGPS(object):
         >>> bool(LIGOTimeGPS(100.5))
         True
         """
-        return self._seconds or self._nanoseconds
+        return self.gpsSeconds or self.gpsNanoSeconds
 
     # -- arithmetic -----------------------------
 
-    def __round__(self, n=0):
+    def __round__(self, int n=0):
         if n == 0 and self.nanoseconds >= 5e8:
-            return type(self)(self._seconds+1)
+            return type(self)(self.gpsSeconds+1)
         elif n == 0:
-            return type(self)(self._seconds)
-        else:
-            return type(self)(self._seconds, round(self._nanoseconds, -9 + n))
+            return type(self)(self.gpsSeconds)
+        return type(self)(self.gpsSeconds, round(self.gpsNanoSeconds, -9 + n))
 
     def __add__(self, other):
         """Add a value to a `LIGOTimeGPS`
@@ -233,13 +262,12 @@ class LIGOTimeGPS(object):
         >>> LIGOTimeGPS(100.5) + "3"
         LIGOTimeGPS(103, 500000000)
         """
+        if not isinstance(self, LIGOTimeGPS):
+            self = LIGOTimeGPS(self)
         if not isinstance(other, LIGOTimeGPS):
             other = LIGOTimeGPS(other)
-        return LIGOTimeGPS(self._seconds + other._seconds,
-                           self._nanoseconds + other._nanoseconds)
-
-    # addition is commutative.
-    __radd__ = __add__
+        return LIGOTimeGPS(self.gpsSeconds + other.gpsSeconds,
+                           self.gpsNanoSeconds + other.gpsNanoSeconds)
 
     def __sub__(self, other):
         """Subtract a value from a `LIGOTimeGPS`
@@ -257,18 +285,12 @@ class LIGOTimeGPS(object):
         >>> LIGOTimeGPS(100.5) - "3"
         LIGOTimeGPS(97, 500000000)
         """
+        if not isinstance(self, LIGOTimeGPS):
+            self = LIGOTimeGPS(self)
         if not isinstance(other, LIGOTimeGPS):
             other = LIGOTimeGPS(other)
-        return LIGOTimeGPS(self._seconds - other._seconds,
-                           self._nanoseconds - other._nanoseconds)
-
-    def __rsub__(self, other):
-        """Subtract a `LIGOTimeGPS` from a value
-        """
-        if not isinstance(other, LIGOTimeGPS):
-            other = LIGOTimeGPS(other)
-        return LIGOTimeGPS(other._seconds - self._seconds,
-                           other._nanoseconds - self._nanoseconds)
+        return LIGOTimeGPS(self.gpsSeconds - other.gpsSeconds,
+                           self.gpsNanoSeconds - other.gpsNanoSeconds)
 
     def __mul__(self, other):
         """Multiply a `LIGOTimeGPS` by a number
@@ -278,29 +300,29 @@ class LIGOTimeGPS(object):
         >>> LIGOTimeGPS(100.5) * 2
         LIGOTimeGPS(201, 0)
         """
-        seconds = self._seconds
-        nanoseconds = self._nanoseconds
+        if not isinstance(self, LIGOTimeGPS):
+            self = LIGOTimeGPS(self)
+
+        cdef int seconds = self.gpsSeconds
+        cdef double nanoseconds = self.gpsNanoSeconds
 
         if seconds < 0 and nanoseconds > 0:
             seconds += 1
             nanoseconds -= 1000000000
 
-        slo = seconds % 131072
-        shi = seconds - slo
-        olo = other % 2**(int(log(other, 2)) - 26) if other else 0
-        ohi = other - olo
+        cdef int slo = seconds % 131072
+        cdef int shi = seconds - slo
+        cdef double olo = other % 2**(int(log2(other)) - 26) if other else 0
+        cdef double ohi = other - olo
 
         nanoseconds *= float(other)
-        seconds = 0.
+        seconds = 0
         for addend in (slo * olo, shi * olo, slo * ohi, shi * ohi):
             n, s = modf(addend)
-            seconds += s
+            seconds += int(s)
             nanoseconds += n * 1e9
 
         return LIGOTimeGPS(seconds, round(nanoseconds))
-
-    # multiplication is commutative
-    __rmul__ = __mul__
 
     def __truediv__(self, other):
         """Divide a `LIGOTimeGPS` by a number
@@ -310,7 +332,11 @@ class LIGOTimeGPS(object):
         >>> LIGOTimeGPS(100.5) / 2
         LIGOTimeGPS(50, 250000000)
         """
-        quotient = LIGOTimeGPS(float(self) / float(other))
+        if not isinstance(self, LIGOTimeGPS):
+            return NotImplemented
+
+        cdef LIGOTimeGPS quotient = LIGOTimeGPS(float(self) / float(other))
+        cdef double redisual
         for n in range(100):
             residual = float(self - quotient * other) / float(other)
             quotient += residual
@@ -328,7 +354,7 @@ class LIGOTimeGPS(object):
         >>> LIGOTimeGPS(100.5) % 3
         LIGOTimeGPS(1, 500000000)
         """
-        quotient = int(self / other)
+        cdef int quotient = int(self / other)
         return self - quotient * other
 
     # -- unary arithmetic -----------------------
@@ -340,6 +366,6 @@ class LIGOTimeGPS(object):
         return LIGOTimeGPS(0, -self.ns())
 
     def __abs__(self):
-        if self._seconds >= 0:
+        if self.gpsSeconds >= 0:
             return self
         return -self

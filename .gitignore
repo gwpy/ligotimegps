@@ -9,4 +9,8 @@
 /.eggs/
 __pycache__/
 /.coverage
+.pytest_cache/
 
+# C extension files
+*.so
+/ligotimegps/_ligotimegps*.c
