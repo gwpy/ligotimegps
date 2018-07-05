@@ -1,0 +1,12 @@
+environment:
+  matrix:
+    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python35-x64"
+    - PYTHON: "C:\\Python36-x64"
+install:
+  - "%PYTHON%\\python.exe -m pip install --upgrade pip"
+  - "%PYTHON%\\python.exe -m pip install setuptools"
+build_script:
+  - "%PYTHON%\\python.exe -m pip install --verbose ."
+test_script:
+  - "%PYTHON%\\python.exe setup.py test"
