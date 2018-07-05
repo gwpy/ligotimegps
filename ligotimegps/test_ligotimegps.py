@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with ligotimegps.  If not, see <http://www.gnu.org/licenses/>.
 
+from numbers import Integral
+
 from six import PY2
 
 import pytest
@@ -102,7 +104,7 @@ if PY2:
 
 def test_ns():
     n = LIGOTimeGPS(12345, 67890).ns()
-    assert isinstance(n, int)
+    assert isinstance(n, Integral)
     assert n == 12345000067890
 
 
