@@ -7,6 +7,6 @@ install:
   - "%PYTHON%\\python.exe -m pip install --upgrade pip"
   - "%PYTHON%\\python.exe -m pip install setuptools Cython"
 build_script:
-  - "%PYTHON%\\python.exe -m pip install ."
+  - "%PYTHON%\\python.exe -m pip install --verbose ."
 test_script:
   - "%PYTHON%\\python.exe setup.py test"
