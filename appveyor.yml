@@ -4,7 +4,7 @@ environment:
     - PYTHON: "C:\\Python35"
     - PYTHON: "C:\\Python36"
 install:
-  - "%PYTHON%\\python.exe -m pip install --upgrade pip"
+  - "%PYTHON%\\python.exe -m pip install --upgrade pip setuptools"
   - "%PYTHON%\\python.exe -m pip install setuptools Cython"
 build_script:
   - "%PYTHON%\\python.exe -m pip install --verbose ."
