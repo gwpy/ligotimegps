@@ -18,8 +18,6 @@
 
 from numbers import Integral
 
-from six import PY2
-
 import pytest
 
 from ligotimegps import LIGOTimeGPS
@@ -95,12 +93,6 @@ def test_int():
     assert isinstance(i, int)
     assert i == 1
 
-if PY2:
-    def test_long():
-        l = long(LIGOTimeGPS(123456789, 123456789))
-        assert isinstance(l, long)
-        assert l == 123456789
-
 
 def test_ns():
     n = LIGOTimeGPS(12345, 67890).ns()
@@ -150,10 +142,7 @@ def test_round():
     # test round (down) to int
     a = LIGOTimeGPS(12345, 67890)
     b = round(a)
-    if PY2:
-        assert isinstance(b, float)
-    else:
-        assert isinstance(b, LIGOTimeGPS)
+    assert isinstance(b, LIGOTimeGPS)
     assert b == 12345
 
     # test round up
@@ -161,8 +150,7 @@ def test_round():
 
     # test round with decimal point
     b = round(a, 1)
-    if not PY2:
-        assert isinstance(b, LIGOTimeGPS)
+    assert isinstance(b, LIGOTimeGPS)
     assert b == 12345.0
     assert round(a, 7) == LIGOTimeGPS(12345, 67900)
 

@@ -27,15 +27,6 @@ try:
 except ImportError:  # python 2.6
     from total_ordering import total_ordering
 
-import six
-
-if six.PY2 and os.name == 'nt':  # use numpy for long int on python 2.7
-    from numpy import long as long_
-elif six.PY2:  # python 2.7 builtin long
-    long_ = long
-else:  # python >= 3 builtin int is long
-    long_ = int
-
 from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
@@ -93,8 +84,8 @@ class LIGOTimeGPS(object):
             ns, seconds = modf(seconds)
             seconds = int(seconds)
             nanoseconds += ns * 1e9
-        elif not isinstance(seconds, six.integer_types):
-            if isinstance(seconds, (six.binary_type, six.text_type)):
+        elif not isinstance(seconds, int):
+            if isinstance(seconds, (str, bytes)):
                 try:
                     seconds = str(Decimal(seconds))
                 except ArithmeticError:
@@ -157,15 +148,6 @@ class LIGOTimeGPS(object):
         """
         return self._seconds
 
-    if six.PY2:
-        def __long__(self):
-            """Return the integer part (seconds) of a `LIGOTimeGPS` as a long
-
-            >>> long(LIGOTimeGPS(100.5))
-            100L
-            """
-            return long(self._seconds)
-
     def ns(self):
         """Convert a `LIGOTimeGPS` to a count of nanoseconds as an int
 
@@ -177,7 +159,7 @@ class LIGOTimeGPS(object):
         >>> LIGOTimeGPS(100.5).ns()
         100500000000
         """
-        return long_(self._seconds) * 1000000000 + self._nanoseconds
+        return self._seconds * 1000000000 + self._nanoseconds
 
     # -- comparison -----------------------------
 
