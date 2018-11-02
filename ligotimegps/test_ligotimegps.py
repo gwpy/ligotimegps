@@ -138,6 +138,13 @@ def test_hash():
     assert h == 435
 
 
+def test_bool():
+    assert bool(LIGOTimeGPS(0)) is False
+    assert bool(LIGOTimeGPS(0, 1234)) is True
+    assert bool(LIGOTimeGPS(1)) is True
+    assert bool(LIGOTimeGPS(-1, 1234)) is True
+
+
 def test_round():
     # test round (down) to int
     a = LIGOTimeGPS(12345, 67890)

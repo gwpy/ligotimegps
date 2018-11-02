@@ -19,13 +19,8 @@
 
 import os
 from math import (modf, log, isinf)
-from functools import wraps
+from functools import (total_ordering, wraps)
 from decimal import Decimal
-
-try:
-    from functools import total_ordering
-except ImportError:  # python 2.6
-    from total_ordering import total_ordering
 
 from ._version import get_versions
 __version__ = get_versions()['version']
@@ -191,7 +186,7 @@ class LIGOTimeGPS(object):
     def __hash__(self):
         return self._seconds ^ self._nanoseconds
 
-    def __nonzero__(self):
+    def __bool__(self):
         """Return True if the `LIGOTimeGPS` is nonzero
 
         Examples
@@ -199,7 +194,7 @@ class LIGOTimeGPS(object):
         >>> bool(LIGOTimeGPS(100.5))
         True
         """
-        return self._seconds or self._nanoseconds
+        return bool(self._seconds or self._nanoseconds)
 
     # -- arithmetic -----------------------------
 
