@@ -1,11 +1,12 @@
 environment:
   matrix:
-    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python34-x64"
     - PYTHON: "C:\\Python35-x64"
     - PYTHON: "C:\\Python36-x64"
+    - PYTHON: "C:\\Python37-x64"
 install:
   - "%PYTHON%\\python.exe -m pip install --upgrade pip"
-  - "%PYTHON%\\python.exe -m pip install setuptools"
+  - "%PYTHON%\\python.exe -m pip install \"setuptools>=27.3\" \"pytest>=2.8\""
 build_script:
   - "%PYTHON%\\python.exe -m pip install --verbose ."
 test_script:

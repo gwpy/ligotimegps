@@ -35,11 +35,7 @@ else:
     setup_requires = []
 
 # runtime dependencies
-install_requires = ['six']
-if sys.version < '2.7':
-    install_requires.append('total-ordering')
-if os.name == 'nt' and sys.version < '3.0':
-    install_requires.append('numpy')
+install_requires = []
 
 # test dependencies
 tests_require = ['pytest>=2.8']
@@ -61,19 +57,18 @@ setup(name='ligotimegps',
       url="https://github.com/gwpy/ligotimegps",
       license='GPLv3',
       cmdclass=versioneer.get_cmdclass(),
+      python_requires='>=3.4',
       setup_requires=setup_requires,
       install_requires=install_requires,
       tests_require=tests_require,
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Programming Language :: Python',
-          'Programming Language :: Python :: 2.6',
-          'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
-          'Programming Language :: Python :: 3.3',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
           'Programming Language :: Python :: 3.6',
+          'Programming Language :: Python :: 3.7',
           'Intended Audience :: Science/Research',
           'Natural Language :: English',
           'Topic :: Scientific/Engineering',
