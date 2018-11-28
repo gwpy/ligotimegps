@@ -62,11 +62,15 @@ def test_creation():
     assert a.gpsSeconds == 1234567898
     assert a.gpsNanoSeconds == 765432100
 
-    # check errors
-    with pytest.raises(TypeError):
-        LIGOTimeGPS('test')
-    with pytest.raises(TypeError):
-        LIGOTimeGPS(None)
+
+@pytest.mark.parametrize('input_, errstr', [
+    ('test', 'invalid literal for LIGOTimeGPS: test'),
+    (None, 'cannot convert None (NoneType) to LIGOTimeGPS'),
+])
+def test_creation_errors(input_, errstr):
+    with pytest.raises(TypeError) as err:
+        LIGOTimeGPS(input_)
+    assert str(err.value) == errstr
 
 
 def test_str():

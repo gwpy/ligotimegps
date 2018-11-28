@@ -84,8 +84,8 @@ class LIGOTimeGPS(object):
                 try:
                     seconds = str(Decimal(seconds))
                 except ArithmeticError:
-                    raise TypeError("invalid literal for LIGOTimeGPS(): %s"
-                                    % seconds)
+                    raise TypeError("invalid literal for {0}: {1}".format(
+                       type(self).__name__, seconds))
                 sign = -1 if seconds.startswith("-") else +1
                 if "." in seconds:
                     seconds, ns = seconds.split(".")
@@ -99,7 +99,8 @@ class LIGOTimeGPS(object):
                 nanoseconds += seconds.gpsNanoSeconds
                 seconds = seconds.gpsSeconds
             else:
-                raise TypeError(seconds)
+                raise TypeError("cannot convert {0!r} ({0.__class__.__name__})"
+                                " to {1.__name__}".format(seconds, type(self)))
         self._seconds = seconds + int(nanoseconds // 1000000000)
         self._nanoseconds = int(nanoseconds % 1000000000)
 
