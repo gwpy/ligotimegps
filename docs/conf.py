@@ -47,6 +47,9 @@ pygments_style = 'monokai'
 # documents.
 default_role = 'obj'
 
+# The master toctree document.
+master_doc = 'index'
+
 # Epilogue
 rst_epilog = """
 
