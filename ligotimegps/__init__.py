@@ -17,6 +17,14 @@
 # You should have received a copy of the GNU General Public License
 # along with ligotimegps.  If not, see <http://www.gnu.org/licenses/>.
 
+"""`ligotimegps` provides a pure-python version of the |lal.LIGOTimeGPS|_
+object, used to represent GPS times (number of seconds elapsed since GPS
+epoch) with nanoseconds precision.
+
+The code provided here is much slower than the C-implementation provided
+by LAL, so if you really care about performance, don't use this module.
+"""
+
 import os
 from math import (modf, log, isinf)
 from functools import (total_ordering, wraps)
@@ -44,7 +52,8 @@ class LIGOTimeGPS(object):
     ----------
     seconds : `int`, `str`
         the count of seconds
-    nanoseconds: `int`, `str`, optional
+
+    nanoseconds : `int`, `str`, optional
         the count of nanoseconds
 
     Examples
@@ -105,8 +114,14 @@ class LIGOTimeGPS(object):
         self._nanoseconds = int(nanoseconds % 1000000000)
 
     # define read-only properties to access each part
-    seconds = gpsSeconds = property(lambda self: self._seconds)
-    nanoseconds = gpsNanoSeconds = property(lambda self: self._nanoseconds)
+    seconds = gpsSeconds = property(
+        fget=lambda self: self._seconds,
+        doc="Seconds since 0h UTC 6 Jan 1980",
+    )
+    nanoseconds = gpsNanoSeconds = property(
+        fget=lambda self: self._nanoseconds,
+        doc="residual nanoseconds",
+    )
 
     # -- representations ------------------------
 
