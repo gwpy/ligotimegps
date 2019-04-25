@@ -47,6 +47,9 @@ pygments_style = 'monokai'
 # documents.
 default_role = 'obj'
 
+# Default file type
+source_suffix = '.rst'
+
 # The master toctree document.
 master_doc = 'index'
 
