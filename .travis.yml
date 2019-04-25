@@ -1,22 +1,23 @@
 language: python
 sudo: false
-dist: trusty
+dist: xenial
 python:
   - '3.4'
   - '3.5'
   - '3.6'
+  - '3.7'
   - 'nightly'
 before_install:
-  - pip install --upgrade pip setuptools
+  - python -m pip install --upgrade pip "setuptools"
 install:
-  - pip install .
+  - python -m pip install .
 before_script:
-  - pip install coverage "pytest>=2.8" pytest-runner
+  - python -m pip install "pytest>=2.8" "pytest-cov"
 script:
-  - coverage run ./setup.py test
+  - python -m pytest ligotimegps --cov=ligotimegps
 after_success:
-  - pip install "coveralls"
-  - coveralls
+  - python -m pip install "codecov"
+  - python -m codecov --flags $(uname) python${TRAVIS_PYTHON_VERSION/./}
 cache: pip
 deploy:
   - provider: pypi
