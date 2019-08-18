@@ -1,4 +1,4 @@
 sphinx
 sphinx_automodapi
 sphinx_rtd_theme
-sphinx_tabs
+sphinx_tabs==1.1.11
