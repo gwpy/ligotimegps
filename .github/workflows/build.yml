@@ -83,13 +83,10 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install test requirements
-      run: python -m pip install pytest pytest-cov
-
-    - name: Install LIGOTimeGPS
+    - name: Install LIGOTimeGPS with test extras
       run: |
         TARBALL=$(ls ligotimegps-*.tar.*)
-        python -m pip install ${TARBALL}
+        python -m pip install ${TARBALL}[test]
 
     - name: Package list
       run: python -m pip list installed

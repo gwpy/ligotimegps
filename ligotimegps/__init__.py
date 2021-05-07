@@ -29,9 +29,10 @@ from math import (modf, log, isinf)
 from functools import total_ordering
 from decimal import Decimal
 
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
+try:
+    from ._version import version as __version__
+except ModuleNotFoundError:  # development mode
+    __version__ = ''
 
 __all__ = ['LIGOTimeGPS']
 
