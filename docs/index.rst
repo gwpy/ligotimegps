@@ -6,17 +6,21 @@ ligotimegps
 |Version| |DOI| |License| |Supported Python versions| |Coverage Status|
 
 
-.. |Version| image:: https://badge.fury.io/gh/ligotimegps.svg
-   :target: https://badge.fury.io/gh/ligotimegps
+.. |Version| image:: https://badge.fury.io/py/ligotimegps.svg
+   :target: https://badge.fury.io/py/ligotimegps
+   :alt: PyPI version badge
 .. |DOI| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1180873.svg
    :target: https://doi.org/10.5281/zenodo.1180873
+   :alt: Zenodo DOI badge
 .. |Supported Python versions| image:: https://img.shields.io/pypi/pyversions/ligotimegps.svg
-   :target: https://travis-ci.org/gwpy/ligotimegps
+   :alt: Python versions badge
 .. |Coverage Status| image:: https://codecov.io/gh/gwpy/ligotimegps/branch/main/graph/badge.svg?token=qKMI0G3Ymb
    :target: https://codecov.io/gh/gwpy/ligotimegps
+   :alt: Codecov badge
 
 .. |License| image:: https://img.shields.io/pypi/l/ligotimegps.svg
    :target: https://choosealicense.com/licenses/gpl-3.0/
+   :alt: License badge
 
 .. automodule:: ligotimegps
 
