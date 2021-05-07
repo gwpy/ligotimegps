@@ -11,8 +11,8 @@ This module provides a pure-python version of the `LIGOTimeGPS` class, used to r
 
 ## Development status
 
-[![Build status](https://github.com/gwpy/ligotimegps/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/gwpy/ligotimegps/actions/workflows/build.yml)
-[![Coverage Status](https://coveralls.io/repos/github/gwpy/ligotimegps/badge.svg?branch=master)](https://coveralls.io/github/gwpy/ligotimegps?branch=master)
+[![Build status](https://github.com/gwpy/ligotimegps/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/gwpy/ligotimegps/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/gwpy/ligotimegps/branch/main/graph/badge.svg?token=qKMI0G3Ymb)](https://codecov.io/gh/gwpy/ligotimegps)
 [![Documentation Status](https://readthedocs.org/projects/ligotimegps/badge/?version=stable)](https://ligotimegps.readthedocs.io/en/stable/?badge=stable)
 
 ## Description
