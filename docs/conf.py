@@ -13,7 +13,7 @@ from ligotimegps import __version__ as VERSION
 # -- Project information -----------------------------------------------------
 
 project = 'ligotimegps'
-copyright = "2010-2016, Kipp Cannon; 2017-2018 Duncan Macleod"
+copyright = "2010-2016, Kipp Cannon; 2017-2021 Cardiff University"
 author = 'Duncan Macleod'
 
 # The full version, including alpha/beta/rc tags
