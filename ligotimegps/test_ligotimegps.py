@@ -23,44 +23,46 @@ import pytest
 from ligotimegps import LIGOTimeGPS
 
 
-def almost_equal(a, b, places=7):
+def assert_almost_equal(a, b, places=7):  # pragma: no cover
     if round(abs(a - b), places) == 0:
         return
     raise AssertionError('{} != {} within {} places'.format(a, b, places))
 
 
-def test_creation():
-    # test simple creations
+@pytest.mark.parametrize(("value", "sec", "nanosec"), (
+    # simple integer
+    (1, 1, 0),
+    # (sec, nanosec) tuple of integers
+    ((100, 200), 100, 200),
+    # simple float
+    (1.002, 1, 2000000),
+    # string
+    ("1.234", 1, 234000000),
+    # tuple of strings
+    (("1", "234"), 1, 234),
+    # high-precision string
+    ("1.2345678987654321e9", 1234567898, 765432100),
+))
+def test_creation(value, sec, nanosec):
+    """Test LIGOTimeGPS creation
+    """
+    if not isinstance(value, tuple):
+        value = (value,)
+    gps = LIGOTimeGPS(*value)
+
+    assert gps.seconds == sec
+    assert gps.gpsSeconds == sec
+    assert gps.nanoseconds == nanosec
+    assert gps.gpsNanoSeconds == nanosec
+
+
+def test_copy():
+    """Test that we can copy a LIGOTimeGPS to a new object
+    """
     a = LIGOTimeGPS(1)
-    assert isinstance(a, LIGOTimeGPS)
-    assert a.seconds == 1
-    assert a.gpsSeconds == 1
-    assert a.nanoseconds == 0
-    assert a.gpsNanoSeconds == 0
-
-    a = LIGOTimeGPS(100, 200)
-    assert a.gpsSeconds == 100
-    assert a.gpsNanoSeconds == 200
-
-    a = LIGOTimeGPS(1.002)
-    assert a.gpsSeconds == 1
-    assert a.gpsNanoSeconds == 2000000
-
     b = LIGOTimeGPS(a)
-    assert a == b
-
-    # test string creation
-    a = LIGOTimeGPS("1.234")
-    assert a.gpsSeconds == 1
-    assert a.gpsNanoSeconds == 234000000
-
-    a = LIGOTimeGPS("1", "234")
-    assert a.gpsSeconds == 1
-    assert a.gpsNanoSeconds == 234
-
-    a = LIGOTimeGPS("1.2345678987654321e9")
-    assert a.gpsSeconds == 1234567898
-    assert a.gpsNanoSeconds == 765432100
+    assert b == a
+    assert b is not a
 
 
 @pytest.mark.parametrize('input_, errstr', [
@@ -73,13 +75,17 @@ def test_creation_errors(input_, errstr):
     assert str(err.value) == errstr
 
 
-def test_str():
-    assert str(LIGOTimeGPS(1)) == "1"
-    assert str(LIGOTimeGPS(1, 1)) == "1.000000001"
-    assert str(LIGOTimeGPS(100, 1)) == "100.000000001"
-    assert str(LIGOTimeGPS(100, 100)) == "100.0000001"
-    assert str(LIGOTimeGPS(-100, 100)) == "-99.9999999"
-    assert str(LIGOTimeGPS(-1, 100)) == "-0.9999999"
+@pytest.mark.parametrize(("value", "strrep"), (
+    (LIGOTimeGPS(1), "1"),
+    (LIGOTimeGPS(1, 1), "1.000000001"),
+    (LIGOTimeGPS(100, 1), "100.000000001"),
+    (LIGOTimeGPS(100, 100), "100.0000001"),
+    (LIGOTimeGPS(-100, 100), "-99.9999999"),
+    (LIGOTimeGPS(-1, 100), "-0.9999999"),
+
+))
+def test_str(value, strrep):
+    assert str(value) == strrep
 
 
 def test_repr():
@@ -104,35 +110,72 @@ def test_ns():
     assert n == 12345000067890
 
 
-def test_eq_neq():
-    assert LIGOTimeGPS(1) == LIGOTimeGPS(1)
-    assert LIGOTimeGPS(1) != LIGOTimeGPS(2)
-    assert (
-        LIGOTimeGPS(123456789.123456789) ==
-        LIGOTimeGPS(123456789.123456789))
+@pytest.mark.parametrize(("a", "b"), (
+    (LIGOTimeGPS(1), LIGOTimeGPS(1)),
+    (LIGOTimeGPS(1), 1),
+    (1, LIGOTimeGPS(1)),
+    (LIGOTimeGPS(123456789.123456789), 123456789.123456789),
+))
+def test_eq(a, b):
+    """Test 'equal to'
+    """
+    assert a == b
 
 
-def test_lt_gt():
-    # less than
-    assert LIGOTimeGPS(1) < LIGOTimeGPS(2)
-    assert LIGOTimeGPS(1) < 2
-    assert LIGOTimeGPS(1, 200) < LIGOTimeGPS(1, 300)
+@pytest.mark.parametrize(("a", "b"), (
+    (LIGOTimeGPS(1), LIGOTimeGPS(2)),
+))
+def test_neq(a, b):
+    """Test 'not equal to'
+    """
+    assert a != b
 
-    # greater than
-    assert LIGOTimeGPS(2) > LIGOTimeGPS(1)
-    assert LIGOTimeGPS(2) > 1
 
-    # less equal
-    assert LIGOTimeGPS(1) <= LIGOTimeGPS(2)
-    assert LIGOTimeGPS(1) <= 2
-    assert 1 <= LIGOTimeGPS(2)
-    assert LIGOTimeGPS(2) <= LIGOTimeGPS(2)
+@pytest.mark.parametrize(("a", "b"), (
+    (LIGOTimeGPS(1), LIGOTimeGPS(2)),
+    (LIGOTimeGPS(1), 2),
+    (1, LIGOTimeGPS(2)),
+    (LIGOTimeGPS(1, 200), LIGOTimeGPS(1, 300)),
+))
+def test_lt(a, b):
+    """Test 'less than'
+    """
+    assert a < b
 
-    # greater equal
-    assert LIGOTimeGPS(2) >= LIGOTimeGPS(1)
-    assert LIGOTimeGPS(2) >= 1
-    assert 2 >= LIGOTimeGPS(1)
-    assert LIGOTimeGPS(2) >= LIGOTimeGPS(2)
+
+@pytest.mark.parametrize(("a", "b"), (
+    (LIGOTimeGPS(2), LIGOTimeGPS(1)),
+    (LIGOTimeGPS(2), 1),
+    (2, LIGOTimeGPS(1)),
+))
+def test_gt(a, b):
+    """Test 'greater than'
+    """
+    assert a > b
+
+
+@pytest.mark.parametrize(("a", "b"), (
+    (LIGOTimeGPS(1), LIGOTimeGPS(2)),
+    (LIGOTimeGPS(1), 2),
+    (1, LIGOTimeGPS(2)),
+    (LIGOTimeGPS(2), LIGOTimeGPS(2)),
+))
+def test_le(a, b):
+    """Test 'less than or equal to'
+    """
+    assert a <= b
+
+
+@pytest.mark.parametrize(("a", "b"), (
+    (LIGOTimeGPS(2), LIGOTimeGPS(1)),
+    (LIGOTimeGPS(2), 1),
+    (2, LIGOTimeGPS(1)),
+    (LIGOTimeGPS(2), LIGOTimeGPS(2)),
+))
+def test_ge(a, b):
+    """Test 'greater than or equal to'
+    """
+    assert a >= b
 
 
 def test_hash():
@@ -141,96 +184,88 @@ def test_hash():
     assert h == 435
 
 
-def test_bool():
-    assert bool(LIGOTimeGPS(0)) is False
-    assert bool(LIGOTimeGPS(0, 1234)) is True
-    assert bool(LIGOTimeGPS(1)) is True
-    assert bool(LIGOTimeGPS(-1, 1234)) is True
+@pytest.mark.parametrize(("value", "truth"), (
+    (LIGOTimeGPS(0), False),
+    (LIGOTimeGPS(0, 1234), True),
+    (LIGOTimeGPS(1), True),
+    (LIGOTimeGPS(-1, 1234), True),
+))
+def test_bool(value, truth):
+    """Test bool(x)
+    """
+    assert bool(value) is truth
 
 
 def test_round():
-    # test round (down) to int
     a = LIGOTimeGPS(12345, 67890)
     b = round(a)
     assert isinstance(b, LIGOTimeGPS)
     assert b == 12345
 
-    # test round up
+
+def test_round_up():
     assert round(LIGOTimeGPS(12345, 500000000)) == 12346
 
-    # test round with decimal point
+
+def test_round_precision():
+    a = LIGOTimeGPS(12345, 67890)
     b = round(a, 1)
     assert isinstance(b, LIGOTimeGPS)
     assert b == 12345.0
     assert round(a, 7) == LIGOTimeGPS(12345, 67900)
 
 
-def test_add():
-    a = LIGOTimeGPS(1) + LIGOTimeGPS(2)
-    assert isinstance(a, LIGOTimeGPS)
-    assert a == 3
-
-    b = LIGOTimeGPS(1) + 2
-    assert isinstance(b, LIGOTimeGPS)
-    assert a == b
-
-    c = 1 + LIGOTimeGPS(2)
-    assert isinstance(c, LIGOTimeGPS)
-    assert a == c
-
-    a = 123.456 + LIGOTimeGPS(456, 999000000)
-    assert a == 580.455
+@pytest.mark.parametrize(("a", "b", "result"), (
+    (LIGOTimeGPS(1), LIGOTimeGPS(2), 3),
+    (LIGOTimeGPS(1), 2, 3),
+    (1, LIGOTimeGPS(2), 3),
+    (123.456, LIGOTimeGPS(456, 999000000), 580.455),
+))
+def test_add(a, b, result):
+    sum_ = a + b
+    assert isinstance(sum_, LIGOTimeGPS)
+    assert sum_ == result
 
 
-def test_sub():
-    a = LIGOTimeGPS(2) - LIGOTimeGPS(1)
-    assert isinstance(a, LIGOTimeGPS)
-    assert a == 1
-
-    b = LIGOTimeGPS(2) - 1
-    assert isinstance(b, LIGOTimeGPS)
-    assert a == 1
-
-    c = 2 - LIGOTimeGPS(1)
-    assert isinstance(c, LIGOTimeGPS)
-    assert c == 1
+@pytest.mark.parametrize(("a", "b", "result"), (
+    (LIGOTimeGPS(2), LIGOTimeGPS(1), 1),
+    (LIGOTimeGPS(2), 1, 1),
+    (2, LIGOTimeGPS(1), 1),
+))
+def test_sub(a, b, result):
+    diff = a - b
+    assert isinstance(diff, LIGOTimeGPS)
+    assert diff == result
 
 
-def test_mul():
-    a = LIGOTimeGPS(2) * LIGOTimeGPS(5)
-    assert isinstance(a, LIGOTimeGPS)
-    assert a == 10
-
-    b = LIGOTimeGPS(2) * 5
-    assert isinstance(b, LIGOTimeGPS)
-    assert a == b
-
-    c = 2 * LIGOTimeGPS(5)
-    assert isinstance(c, LIGOTimeGPS)
-    assert a == c
-
-    d = LIGOTimeGPS(123, 456000000) * LIGOTimeGPS(234, 567000000)
-    almost_equal(d, 28958.703552)
-    assert LIGOTimeGPS(-123, 456789000) * 2 == -245.086422
-    almost_equal(LIGOTimeGPS(123, -456000000) * 4, 490.176)
+@pytest.mark.parametrize(("a", "b", "result"), (
+    (LIGOTimeGPS(2), LIGOTimeGPS(5), 10),
+    (LIGOTimeGPS(2), 5, 10),
+    (2, LIGOTimeGPS(5), 10),
+    (LIGOTimeGPS(123, 456000000), LIGOTimeGPS(234, 567000000), 28958.703552),
+    (LIGOTimeGPS(-123, 456789000), 2, -245.086422),
+))
+def test_mul(a, b, result):
+    prod = a * b
+    assert isinstance(prod, LIGOTimeGPS)
+    assert_almost_equal(prod, result)
 
 
-def test_div():
-    a = LIGOTimeGPS(10) / LIGOTimeGPS(5)
-    assert isinstance(a, LIGOTimeGPS)
-    assert a == 2
+@pytest.mark.parametrize(("a", "b", "result"), (
+    (LIGOTimeGPS(10), LIGOTimeGPS(5), 2),
+    (LIGOTimeGPS(10), 5, 2),
+    (LIGOTimeGPS(123, 456789012), 3.14159265, 39.2975165039),
+))
+def test_div(a, b, result):
+    quot = a / b
+    assert isinstance(quot, LIGOTimeGPS)
+    assert quot == result
 
-    b = LIGOTimeGPS(10) / 5.
-    assert isinstance(b, LIGOTimeGPS)
-    assert a == b
 
+def test_div_error():
     # check that we can't do int/LIGOTimeGPS
     with pytest.raises(TypeError):
         10 / LIGOTimeGPS(2)
-
-    # check crazy numbers work (almost)
-    d = LIGOTimeGPS(123, 456789012) / 3.14159265
-    almost_equal(d, 39.2975165039)
 
 
 def test_mod():
