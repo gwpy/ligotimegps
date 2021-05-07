@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright Kipp Cannon 2010-2016
-# Copyright Duncan Macleod 2017
+# Copyright (C)  Kipp Cannon (2010-2016)
+#                Cardiff University (2017-2021)
 #
 # This file is part of ligotimegps.
 #

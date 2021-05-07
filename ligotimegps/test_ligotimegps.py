@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright Duncan Macleod 2017
+# Copyright (C)  Cardiff University (2017-2021)
 #
 # This file is part of ligotimegps.
 #
