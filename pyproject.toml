@@ -1,0 +1,17 @@
+# -- build ------------------
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "setuptools_scm[toml]>=3.4",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+# -- tools ------------------
+
+[tool.pytest.ini_options]
+addopts = "-r a --color=yes"
+
+[tool.setuptools_scm]
+write_to = "ligotimegps/_version.py"

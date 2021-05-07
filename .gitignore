@@ -1,15 +1,25 @@
-# filetypes to ignore
-*.pyc
-.DS_store
-
-# build files/directories to ignore
-/build/
-/.cache/
-/ligotimegps.egg-info/
-/.eggs/
+# Byte-compiled / optimized / DLL files
 __pycache__/
-/.coverage
+*.py[cod]
 
-# docs
+# C extensions
+*.so
+
+# OS/editor files
+*.swp
+.DS_Store
+.idea
+
+# Distribution / packaging
+/.cache/
+/.coverage
+/.eggs/
+/_build/
+/build/
+/dist/
+/ligotimegps.egg-info/
+/ligotimegps/_version.py
+
+# Sphinx documentation
 /docs/_build/
 /docs/api/
