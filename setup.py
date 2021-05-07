@@ -20,7 +20,6 @@
 """Setup the ligotimegps package
 """
 
-import os
 import sys
 from setuptools import setup
 
@@ -76,4 +75,4 @@ setup(name='ligotimegps',
           'Topic :: Scientific/Engineering :: Physics',
           'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
       ],
-)
+      )
