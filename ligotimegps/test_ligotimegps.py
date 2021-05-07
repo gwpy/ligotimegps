@@ -104,7 +104,6 @@ def test_ns():
     assert n == 12345000067890
 
 
-
 def test_eq_neq():
     assert LIGOTimeGPS(1) == LIGOTimeGPS(1)
     assert LIGOTimeGPS(1) != LIGOTimeGPS(2)
@@ -189,7 +188,7 @@ def test_sub():
     assert a == 1
 
     b = LIGOTimeGPS(2) - 1
-    assert isinstance(a, LIGOTimeGPS)
+    assert isinstance(b, LIGOTimeGPS)
     assert a == 1
 
     c = 2 - LIGOTimeGPS(1)

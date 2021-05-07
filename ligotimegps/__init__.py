@@ -25,9 +25,8 @@ The code provided here is much slower than the C-implementation provided
 by LAL, so if you really care about performance, don't use this module.
 """
 
-import os
 from math import (modf, log, isinf)
-from functools import (total_ordering, wraps)
+from functools import total_ordering
 from decimal import Decimal
 
 from ._version import get_versions
