@@ -23,7 +23,7 @@ import pytest
 from ligotimegps import LIGOTimeGPS
 
 
-def assert_almost_equal(a, b, places=7):
+def assert_almost_equal(a, b, places=7):  # pragma: no cover
     if round(abs(a - b), places) == 0:
         return
     raise AssertionError('{} != {} within {} places'.format(a, b, places))
