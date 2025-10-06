@@ -1,21 +1,83 @@
-# -- build ------------------
-
 [build-system]
 requires = [
-    "setuptools>=42",
-    "setuptools_scm[toml]>=3.4",
+    "setuptools>=61.0",
+    "setuptools_scm[toml]>=6.2",
     "wheel",
 ]
 build-backend = "setuptools.build_meta"
 
-# -- tools ------------------
+[project]
+name = "ligotimegps"
+authors = [
+    {name = "Duncan Macleod", email = "duncan.macleod@ligo.org"},
+]
+description = "A pure Python version of lal.LIGOTimeGPS"
+readme = "README.md"
+license = {text = "GPL-3.0-or-later"}
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://ligotimegps.readthedocs.io/"
+"Download" = "https://pypi.org/project/ligotimegps/"
+"Bug Tracker" = "https://github.com/gwpy/ligotimegps/issues"
+"Documentation" = "https://ligotimegps.readthedocs.io/"
+"Source Code" = "https://github.com/gwpy/ligotimegps"
+
+[project.optional-dependencies]
+docs = [
+    "sphinx>=1.8.0",
+    "sphinx-automodapi",
+    "sphinx_rtd_theme",
+    "sphinx-tabs",
+]
+test = [
+    "pytest>=3.6.3",
+    "pytest-cov>=2.4.0",
+]
+
+[tool.setuptools]
+packages = ["ligotimegps"]
+
+[tool.setuptools_scm]
+write_to = "ligotimegps/_version.py"
 
 [tool.pytest.ini_options]
 addopts = "-r a --color=yes"
 filterwarnings = [
-	"error",
-	"ignore:Using or importing the ABCs",
+    "error",
+    "ignore:Using or importing the ABCs",
 ]
 
-[tool.setuptools_scm]
-write_to = "ligotimegps/_version.py"
+[tool.coverage.run]
+source = ["ligotimegps"]
+omit = [
+    "ligotimegps/_version.py",
+]
+
+[tool.flake8]
+exclude = [
+    "__pycache__",
+    ".eggs/",
+    ".git/",
+    "docs/",
+    "ligotimegps/_version.py",
+    "venv/",
+]
+
+[tool.bdist_wheel]
+universal = true
