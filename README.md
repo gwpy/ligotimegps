@@ -2,18 +2,10 @@
 
 This module provides a pure-python version of the `LIGOTimeGPS` class, used to represent GPS times (number of seconds elapsed since GPS epoch) with nanoseconds precision.
 
-## Release status
-
 [![PyPI version](https://badge.fury.io/py/ligotimegps.svg)](http://badge.fury.io/py/ligotimegps)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1180873.svg)](https://doi.org/10.5281/zenodo.1180873)
+[![Conda version](https://img.shields.io/conda/vn/conda-forge/ligotimegps.svg)](https://anaconda.org/conda-forge/ligotimegps/)
 [![License](https://img.shields.io/pypi/l/ligotimegps.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 ![Supported Python versions](https://img.shields.io/pypi/pyversions/ligotimegps.svg)
-
-## Development status
-
-[![Build status](https://github.com/gwpy/ligotimegps/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/gwpy/ligotimegps/actions/workflows/build.yml)
-[![codecov](https://codecov.io/gh/gwpy/ligotimegps/branch/main/graph/badge.svg?token=qKMI0G3Ymb)](https://codecov.io/gh/gwpy/ligotimegps)
-[![Documentation Status](https://readthedocs.org/projects/ligotimegps/badge/?version=stable)](https://ligotimegps.readthedocs.io/en/stable/?badge=stable)
 
 ## Description
 

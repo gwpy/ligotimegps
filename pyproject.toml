@@ -36,9 +36,9 @@ dynamic = ["version"]
 [project.urls]
 "Homepage" = "https://ligotimegps.readthedocs.io/"
 "Download" = "https://pypi.org/project/ligotimegps/"
-"Bug Tracker" = "https://github.com/gwpy/ligotimegps/issues"
+"Bug Tracker" = "https://gitlab.com/gwpy/ligotimegps/-/issues"
 "Documentation" = "https://ligotimegps.readthedocs.io/"
-"Source Code" = "https://github.com/gwpy/ligotimegps"
+"Source Code" = "https://gitlab.com/gwpy/ligotimegps"
 
 [dependency-groups]
 docs = [

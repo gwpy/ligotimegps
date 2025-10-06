@@ -3,24 +3,20 @@
 ligotimegps
 ===========
 
-|Version| |DOI| |License| |Supported Python versions| |Coverage Status|
+.. image:: https://badge.fury.io/py/ligotimegps.svg
+   :target: http://badge.fury.io/py/ligotimegps
+   :alt: PyPI version
 
+.. image:: https://img.shields.io/conda/vn/conda-forge/ligotimegps.svg
+   :target: https://anaconda.org/conda-forge/ligotimegps/
+   :alt: Conda version
 
-.. |Version| image:: https://badge.fury.io/py/ligotimegps.svg
-   :target: https://badge.fury.io/py/ligotimegps
-   :alt: PyPI version badge
-.. |DOI| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1180873.svg
-   :target: https://doi.org/10.5281/zenodo.1180873
-   :alt: Zenodo DOI badge
-.. |Supported Python versions| image:: https://img.shields.io/pypi/pyversions/ligotimegps.svg
-   :alt: Python versions badge
-.. |Coverage Status| image:: https://codecov.io/gh/gwpy/ligotimegps/branch/main/graph/badge.svg?token=qKMI0G3Ymb
-   :target: https://codecov.io/gh/gwpy/ligotimegps
-   :alt: Codecov badge
-
-.. |License| image:: https://img.shields.io/pypi/l/ligotimegps.svg
+.. image:: https://img.shields.io/pypi/l/ligotimegps.svg
    :target: https://choosealicense.com/licenses/gpl-3.0/
-   :alt: License badge
+   :alt: License
+
+.. image:: https://img.shields.io/pypi/pyversions/ligotimegps.svg
+   :alt: Supported Python versions
 
 .. automodule:: ligotimegps
 
