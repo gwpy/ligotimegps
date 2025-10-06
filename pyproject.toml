@@ -1,3 +1,5 @@
+# -- Project
+
 [build-system]
 requires = [
     "setuptools>=61.0",
@@ -38,7 +40,7 @@ dynamic = ["version"]
 "Documentation" = "https://ligotimegps.readthedocs.io/"
 "Source Code" = "https://github.com/gwpy/ligotimegps"
 
-[project.optional-dependencies]
+[dependency-groups]
 docs = [
     "sphinx>=1.8.0",
     "sphinx-automodapi",
@@ -50,24 +52,30 @@ test = [
     "pytest-cov>=2.4.0",
 ]
 
-[tool.setuptools]
-packages = ["ligotimegps"]
+# -- Tools
 
-[tool.setuptools_scm]
-write_to = "ligotimegps/_version.py"
-
-[tool.pytest.ini_options]
-addopts = "-r a --color=yes"
-filterwarnings = [
-    "error",
-    "ignore:Using or importing the ABCs",
+[tool.coverage.paths]
+source = [
+  "ligotimegps/",
+  "*/ligotimegps/",
 ]
 
-[tool.coverage.run]
-source = ["ligotimegps"]
+[tool.coverage.report]
+exclude_lines = [
+  # ignore when asked
+  "pragma: no( |-)cover",
+  # don't complain about typing blocks
+  "if (typing\\.)?TYPE_CHECKING",
+  # don't complain about __main__ blocks
+  "if __name__ == '__main__'",
+]
 omit = [
-    "ligotimegps/_version.py",
+  # don't report coverage for _version.py
+  # (generated automatically by setuptools-scm)
+  "*/_version.py",
 ]
+# print report with one decimal point
+precision = 1
 
 [tool.flake8]
 exclude = [
@@ -79,5 +87,15 @@ exclude = [
     "venv/",
 ]
 
-[tool.bdist_wheel]
-universal = true
+[tool.pytest.ini_options]
+addopts = "-r a --color=yes"
+filterwarnings = [
+    "error",
+    "ignore:Using or importing the ABCs",
+]
+
+[tool.setuptools]
+packages = ["ligotimegps"]
+
+[tool.setuptools_scm]
+write_to = "ligotimegps/_version.py"
