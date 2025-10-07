@@ -29,6 +29,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
     'sphinx_automodapi.automodapi',
+    'sphinx_copybutton',
     'sphinx_tabs.tabs',
 ]
 
