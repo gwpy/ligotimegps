@@ -43,8 +43,7 @@ def assert_almost_equal(a, b, places=7):  # pragma: no cover
     ("1.2345678987654321e9", 1234567898, 765432100),
 ))
 def test_creation(value, sec, nanosec):
-    """Test LIGOTimeGPS creation
-    """
+    """Test LIGOTimeGPS creation."""
     if not isinstance(value, tuple):
         value = (value,)
     gps = LIGOTimeGPS(*value)
@@ -56,8 +55,7 @@ def test_creation(value, sec, nanosec):
 
 
 def test_copy():
-    """Test that we can copy a LIGOTimeGPS to a new object
-    """
+    """Test that we can copy a LIGOTimeGPS to a new object."""
     a = LIGOTimeGPS(1)
     b = LIGOTimeGPS(a)
     assert b == a
@@ -116,8 +114,7 @@ def test_ns():
     (LIGOTimeGPS(123456789.123456789), 123456789.123456789),
 ))
 def test_eq(a, b):
-    """Test 'equal to'
-    """
+    """Test 'equal to'."""
     assert a == b
 
 
@@ -125,8 +122,7 @@ def test_eq(a, b):
     (LIGOTimeGPS(1), LIGOTimeGPS(2)),
 ))
 def test_neq(a, b):
-    """Test 'not equal to'
-    """
+    """Test 'not equal to'."""
     assert a != b
 
 
@@ -137,8 +133,7 @@ def test_neq(a, b):
     (LIGOTimeGPS(1, 200), LIGOTimeGPS(1, 300)),
 ))
 def test_lt(a, b):
-    """Test 'less than'
-    """
+    """Test 'less than'."""
     assert a < b
 
 
@@ -148,8 +143,7 @@ def test_lt(a, b):
     (2, LIGOTimeGPS(1)),
 ))
 def test_gt(a, b):
-    """Test 'greater than'
-    """
+    """Test 'greater than'."""
     assert a > b
 
 
@@ -160,8 +154,7 @@ def test_gt(a, b):
     (LIGOTimeGPS(2), LIGOTimeGPS(2)),
 ))
 def test_le(a, b):
-    """Test 'less than or equal to'
-    """
+    """Test 'less than or equal to'."""
     assert a <= b
 
 
@@ -172,8 +165,7 @@ def test_le(a, b):
     (LIGOTimeGPS(2), LIGOTimeGPS(2)),
 ))
 def test_ge(a, b):
-    """Test 'greater than or equal to'
-    """
+    """Test 'greater than or equal to'."""
     assert a >= b
 
 
@@ -190,8 +182,7 @@ def test_hash():
     (LIGOTimeGPS(-1, 1234), True),
 ))
 def test_bool(value, truth):
-    """Test bool(x)
-    """
+    """Test bool(x)."""
     assert bool(value) is truth
 
 

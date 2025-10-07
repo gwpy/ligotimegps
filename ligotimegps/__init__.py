@@ -38,7 +38,7 @@ __all__ = ["LIGOTimeGPS"]
 
 @total_ordering
 class LIGOTimeGPS:
-    """An object for storing times with nanosecond resolution
+    """An object for storing times with nanosecond resolution.
 
     Internally the time is represented as a signed integer `gpsSeconds` part
     and an unsigned integer `gpsNanoseconds` part.
@@ -80,8 +80,7 @@ class LIGOTimeGPS:
     """
 
     def __init__(self, seconds, nanoseconds=0):
-        """Create a LIGOTimeGPS instance
-        """
+        """Create a LIGOTimeGPS instance."""
         if not isinstance(nanoseconds, (float, int)):
             nanoseconds = float(nanoseconds)
         if isinstance(seconds, float):
@@ -128,8 +127,7 @@ class LIGOTimeGPS:
         return "LIGOTimeGPS(%d, %u)" % (self._seconds, self._nanoseconds)
 
     def __str__(self):
-        """Return an ASCII string representation of a `LIGOTimeGPS`
-        """
+        """Return an ASCII string representation of a `LIGOTimeGPS`."""
         if (self._seconds >= 0) or (self._nanoseconds == 0):
             s = "%d.%09u" % (self._seconds, self._nanoseconds)
         elif self._seconds < -1:
@@ -139,7 +137,7 @@ class LIGOTimeGPS:
         return s.rstrip("0").rstrip(".")
 
     def __float__(self):
-        """Convert a `LIGOTimeGPS` to seconds as a float
+        """Convert a `LIGOTimeGPS` to seconds as a float.
 
         Examples
         --------
@@ -149,7 +147,7 @@ class LIGOTimeGPS:
         return self._seconds + self._nanoseconds * 1e-9
 
     def __int__(self):
-        """Return the integer part (seconds) of a `LIGOTimeGPS` as an int
+        """Return the integer part (seconds) of a `LIGOTimeGPS` as an int.
 
         Examples
         --------
@@ -159,7 +157,7 @@ class LIGOTimeGPS:
         return self._seconds
 
     def ns(self):
-        """Convert a `LIGOTimeGPS` to a count of nanoseconds as an int
+        """Convert a `LIGOTimeGPS` to a count of nanoseconds as an int.
 
         When running python2.7 on Windows this is returned as `numpy.long`
         to guarantee long-ness.
@@ -200,7 +198,7 @@ class LIGOTimeGPS:
         return self._seconds ^ self._nanoseconds
 
     def __bool__(self):
-        """Return True if the `LIGOTimeGPS` is nonzero
+        """Return True if the `LIGOTimeGPS` is nonzero.
 
         Examples
         --------
@@ -219,7 +217,7 @@ class LIGOTimeGPS:
         return type(self)(self._seconds, round(self._nanoseconds, -9 + n))
 
     def __add__(self, other):
-        """Add a value to a `LIGOTimeGPS`
+        """Add a value to a `LIGOTimeGPS`.
 
         If the value being added to the `LIGOTimeGPS` is not also a
         `LIGOTimeGPS`, then an attempt is made to convert it to `LIGOTimeGPS`.
@@ -242,7 +240,7 @@ class LIGOTimeGPS:
     __radd__ = __add__
 
     def __sub__(self, other):
-        """Subtract a value from a `LIGOTimeGPS`
+        """Subtract a value from a `LIGOTimeGPS`.
 
         If the value being subtracted from the `LIGOTimeGPS` is not also
         a `LIGOTimeGPS`, then an attempt is made to convert it to a
@@ -263,15 +261,14 @@ class LIGOTimeGPS:
                            self._nanoseconds - other._nanoseconds)
 
     def __rsub__(self, other):
-        """Subtract a `LIGOTimeGPS` from a value
-        """
+        """Subtract a `LIGOTimeGPS` from a value."""
         if not isinstance(other, LIGOTimeGPS):
             other = LIGOTimeGPS(other)
         return LIGOTimeGPS(other._seconds - self._seconds,
                            other._nanoseconds - self._nanoseconds)
 
     def __mul__(self, other):
-        """Multiply a `LIGOTimeGPS` by a number
+        """Multiply a `LIGOTimeGPS` by a number.
 
         Examples
         --------
@@ -303,7 +300,7 @@ class LIGOTimeGPS:
     __rmul__ = __mul__
 
     def __truediv__(self, other):
-        """Divide a `LIGOTimeGPS` by a number
+        """Divide a `LIGOTimeGPS` by a number.
 
         Examples
         --------
@@ -321,7 +318,7 @@ class LIGOTimeGPS:
     __div__ = __truediv__
 
     def __mod__(self, other):
-        """Compute the remainder when a `LIGOTimeGPS` is divided by a number
+        """Compute the remainder when a `LIGOTimeGPS` is divided by a number.
 
         Examples
         --------
