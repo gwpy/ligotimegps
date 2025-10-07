@@ -25,6 +25,8 @@ from .. import LIGOTimeGPS
 
 
 @pytest.mark.parametrize(("value", "sec", "nanosec"), [
+    # empty constructor
+    pytest.param((), 0, 0, id="empty"),
     # simple integer
     pytest.param((1,), 1, 0, id="int"),
     # (sec, nanosec) tuple of integers
