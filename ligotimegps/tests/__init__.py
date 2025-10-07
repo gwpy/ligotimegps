@@ -1,5 +1,5 @@
-# Copyright (C)  Kipp Cannon (2010-2016)
-#                Cardiff University (2017-2021)
+# Copyright (c) 2010-2016 Kipp Cannon
+#               2017-2025 Cardiff University
 #
 # This file is part of ligotimegps.
 #
