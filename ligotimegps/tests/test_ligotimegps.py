@@ -151,6 +151,15 @@ def test_lt(a, b):
     assert a < b
 
 
+def test_lt_notimplemented():
+    """Test that 'less than' with something odd raises `TypeError`."""
+    with pytest.raises(
+        TypeError,
+        match="'<' not supported between instances of 'LIGOTimeGPS' and",
+    ):
+        assert LIGOTimeGPS(1) < "test"
+
+
 @pytest.mark.parametrize(("a", "b"), [
     (LIGOTimeGPS(2), LIGOTimeGPS(1)),
     (LIGOTimeGPS(2), 1),
