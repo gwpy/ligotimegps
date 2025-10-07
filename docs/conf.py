@@ -4,17 +4,14 @@
 # list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
 
-import os.path
-from urllib.request import urlretrieve
 
 from ligotimegps import __version__ as VERSION
 
-
 # -- Project information -----------------------------------------------------
 
-project = 'ligotimegps'
-copyright = "2010-2016, Kipp Cannon; 2017-2021 Cardiff University"
-author = 'Duncan Macleod'
+project = "ligotimegps"
+copyright = "2010-2016, Kipp Cannon; 2017-2025 Cardiff University"
+author = "Duncan Macleod"
 
 # The full version, including alpha/beta/rc tags
 release = VERSION
@@ -26,33 +23,33 @@ release = VERSION
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.napoleon',
-    'sphinx_automodapi.automodapi',
-    'sphinx_copybutton',
-    'sphinx_tabs.tabs',
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.napoleon",
+    "sphinx_automodapi.automodapi",
+    "sphinx_copybutton",
+    "sphinx_tabs.tabs",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'monokai'
+pygments_style = "monokai"
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
-default_role = 'obj'
+default_role = "obj"
 
 # Default file type
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # Epilogue
 rst_epilog = """
