@@ -25,7 +25,8 @@ from ligotimegps import LIGOTimeGPS
 def assert_almost_equal(a, b, places=7):  # pragma: no cover
     if round(abs(a - b), places) == 0:
         return
-    raise AssertionError(f"{a} != {b} within {places} places")
+    msg = f"{a} != {b} within {places} places"
+    raise AssertionError(msg)
 
 
 @pytest.mark.parametrize(("value", "sec", "nanosec"), (
