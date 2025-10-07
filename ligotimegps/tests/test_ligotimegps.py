@@ -15,48 +15,45 @@
 # You should have received a copy of the GNU General Public License
 # along with ligotimegps.  If not, see <http://www.gnu.org/licenses/>.
 
+"""Tests for `ligotimegps.LIGOTimeGPS`."""
+
 from numbers import Integral
 
 import pytest
 
-from ligotimegps import LIGOTimeGPS
-
-
-def assert_almost_equal(a, b, places=7):  # pragma: no cover
-    if round(abs(a - b), places) == 0:
-        return
-    msg = f"{a} != {b} within {places} places"
-    raise AssertionError(msg)
+from .. import LIGOTimeGPS
 
 
 @pytest.mark.parametrize(("value", "sec", "nanosec"), [
+    # empty constructor
+    pytest.param((), 0, 0, id="empty"),
     # simple integer
-    (1, 1, 0),
+    pytest.param((1,), 1, 0, id="int"),
     # (sec, nanosec) tuple of integers
-    ((100, 200), 100, 200),
+    pytest.param((100, 200), 100, 200, id="int-tuple"),
     # simple float
-    (1.002, 1, 2000000),
+    pytest.param((1.002,), 1, 2000000, id="float"),
     # string
-    ("1.234", 1, 234000000),
+    pytest.param(("1.234",), 1, 234000000, id="str"),
     # tuple of strings
-    (("1", "234"), 1, 234),
+    pytest.param(("1", "234"), 1, 234, id="str-tuple"),
     # high-precision string
-    ("1.2345678987654321e9", 1234567898, 765432100),
+    pytest.param(
+        ("1.2345678987654321e9",),
+        1234567898,
+        765432100,
+        id="high-precision-str",
+    ),
 ])
 def test_creation(value, sec, nanosec):
-    """Test LIGOTimeGPS creation."""
-    if not isinstance(value, tuple):
-        value = (value,)
+    """Test `LIGOTimeGPS` creation."""
     gps = LIGOTimeGPS(*value)
-
-    assert gps.seconds == sec
     assert gps.gpsSeconds == sec
-    assert gps.nanoseconds == nanosec
     assert gps.gpsNanoSeconds == nanosec
 
 
 def test_copy():
-    """Test that we can copy a LIGOTimeGPS to a new object."""
+    """Test that we can copy a `LIGOTimeGPS` to a new object."""
     a = LIGOTimeGPS(1)
     b = LIGOTimeGPS(a)
     assert b == a
@@ -64,13 +61,21 @@ def test_copy():
 
 
 @pytest.mark.parametrize(("input_", "errstr"), [
-    ("test", "invalid literal for LIGOTimeGPS: test"),
-    (None, "cannot convert None (NoneType) to LIGOTimeGPS"),
+    pytest.param(
+        "test",
+        r"invalid literal for LIGOTimeGPS: 'test'",
+        id="string",
+    ),
+    pytest.param(
+        None,
+        r"cannot convert None \(NoneType\) to LIGOTimeGPS",
+        id="None",
+    ),
 ])
 def test_creation_errors(input_, errstr):
-    with pytest.raises(TypeError) as err:
+    """Test `LIGOTimeGPS` creation errors."""
+    with pytest.raises(TypeError, match=errstr):
         LIGOTimeGPS(input_)
-    assert str(err.value) == errstr
 
 
 @pytest.mark.parametrize(("value", "strrep"), [
@@ -83,26 +88,31 @@ def test_creation_errors(input_, errstr):
 
 ])
 def test_str(value, strrep):
+    """Test ``str(x)``."""
     assert str(value) == strrep
 
 
 def test_repr():
+    """Test ``repr(x)``."""
     assert repr(LIGOTimeGPS(1)) == "LIGOTimeGPS(1, 0)"
 
 
 def test_float():
+    """Test ``float(x)``."""
     f = float(LIGOTimeGPS(1))
     assert isinstance(f, float)
     assert f == 1.0
 
 
 def test_int():
+    """Test ``int(x)``."""
     i = int(LIGOTimeGPS(1, 100))
     assert isinstance(i, int)
     assert i == 1
 
 
 def test_ns():
+    """Test ``LIGOTimeGPS.ns()``."""
     n = LIGOTimeGPS(12345, 67890).ns()
     assert isinstance(n, Integral)
     assert n == 12345000067890
@@ -121,6 +131,9 @@ def test_eq(a, b):
 
 @pytest.mark.parametrize(("a", "b"), [
     (LIGOTimeGPS(1), LIGOTimeGPS(2)),
+    (LIGOTimeGPS(1), 2),
+    (1, LIGOTimeGPS(2)),
+    (LIGOTimeGPS(1), "test"),
 ])
 def test_neq(a, b):
     """Test 'not equal to'."""
@@ -136,6 +149,15 @@ def test_neq(a, b):
 def test_lt(a, b):
     """Test 'less than'."""
     assert a < b
+
+
+def test_lt_notimplemented():
+    """Test that 'less than' with something odd raises `TypeError`."""
+    with pytest.raises(
+        TypeError,
+        match="'<' not supported between instances of 'LIGOTimeGPS' and",
+    ):
+        assert LIGOTimeGPS(1) < "test"
 
 
 @pytest.mark.parametrize(("a", "b"), [
@@ -171,6 +193,7 @@ def test_ge(a, b):
 
 
 def test_hash():
+    """Test ``hash(x)``."""
     h = hash(LIGOTimeGPS(123, 456))
     assert isinstance(h, int)
     assert h == 435
@@ -183,11 +206,12 @@ def test_hash():
     (LIGOTimeGPS(-1, 1234), True),
 ])
 def test_bool(value, truth):
-    """Test bool(x)."""
+    """Test ``bool(x)``."""
     assert bool(value) is truth
 
 
 def test_round():
+    """Test ``round(x)``."""
     a = LIGOTimeGPS(12345, 67890)
     b = round(a)
     assert isinstance(b, LIGOTimeGPS)
@@ -195,10 +219,12 @@ def test_round():
 
 
 def test_round_up():
+    """Test ``round(x)`` rounding up."""
     assert round(LIGOTimeGPS(12345, 500000000)) == 12346
 
 
 def test_round_precision():
+    """Test ``round(x, n)`` with precision."""
     a = LIGOTimeGPS(12345, 67890)
     b = round(a, 1)
     assert isinstance(b, LIGOTimeGPS)
@@ -213,6 +239,7 @@ def test_round_precision():
     (123.456, LIGOTimeGPS(456, 999000000), 580.455),
 ])
 def test_add(a, b, result):
+    """Test addition."""
     sum_ = a + b
     assert isinstance(sum_, LIGOTimeGPS)
     assert sum_ == result
@@ -224,6 +251,7 @@ def test_add(a, b, result):
     (2, LIGOTimeGPS(1), 1),
 ])
 def test_sub(a, b, result):
+    """Test subtraction."""
     diff = a - b
     assert isinstance(diff, LIGOTimeGPS)
     assert diff == result
@@ -237,9 +265,10 @@ def test_sub(a, b, result):
     (LIGOTimeGPS(-123, 456789000), 2, -245.086422),
 ])
 def test_mul(a, b, result):
+    """Test multiplication."""
     prod = a * b
     assert isinstance(prod, LIGOTimeGPS)
-    assert_almost_equal(prod, result)
+    assert float(prod) == pytest.approx(result)
 
 
 @pytest.mark.parametrize(("a", "b", "result"), [
@@ -248,39 +277,57 @@ def test_mul(a, b, result):
     (LIGOTimeGPS(123, 456789012), 3.14159265, 39.2975165039),
 ])
 def test_div(a, b, result):
+    """Test division."""
     quot = a / b
     assert isinstance(quot, LIGOTimeGPS)
     assert quot == result
 
 
 def test_div_error():
+    """Test that we can't do ``int / LIGOTimeGPS``."""
     # check that we can't do int/LIGOTimeGPS
     with pytest.raises(TypeError):
         10 / LIGOTimeGPS(2)
 
 
 def test_mod():
+    """Test modulo operation."""
     assert LIGOTimeGPS(100.5) % 3 == 1.5
 
 
 def test_pos():
+    """Test unary plus."""
     a = LIGOTimeGPS(1, 234)
     assert a == +a
 
 
 def test_neg():
+    """Test unary minus."""
     a = LIGOTimeGPS(1, 234)
     assert -a == LIGOTimeGPS(-2, 999999766)
 
 
 def test_abs():
+    """Test abs(x)."""
     a = LIGOTimeGPS(123, 456789)
     assert abs(a) == a
     assert abs(-a) == a
 
 
 def test_infinity():
+    """Test comparisons with infinity."""
     assert LIGOTimeGPS(1) < float("inf")
     assert LIGOTimeGPS(1) > -float("inf")
     assert LIGOTimeGPS(1) != float("inf")
     assert LIGOTimeGPS(1) != -float("inf")
+
+
+def test_lal():
+    """Test compatibility with `lal.LIGOTimeGPS`."""
+    lal = pytest.importorskip("lal")
+    a = LIGOTimeGPS(123, 456789012)
+    b = lal.LIGOTimeGPS(a.gpsSeconds, a.gpsNanoSeconds)
+    assert a == b
+    c = LIGOTimeGPS(b)
+    assert a == c
+    assert b == c
