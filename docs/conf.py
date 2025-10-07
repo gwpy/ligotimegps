@@ -79,7 +79,7 @@ html_theme = 'sphinx_rtd_theme'
 
 # Intersphinx directory
 intersphinx_mapping = {
-    'https://docs.python.org/': None,  # python
+    "python": ("https://docs.python.org/", None),
 }
 
 # Don't inherit in automodapi
