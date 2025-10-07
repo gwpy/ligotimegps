@@ -20,11 +20,6 @@ ligotimegps
 
 .. automodule:: ligotimegps
 
-.. contents:: Documentation contents:
-   :local:
-   :backlinks: none
-   :depth: 1
-
 Installation
 ------------
 
@@ -36,8 +31,6 @@ Pip
 
     python -m pip install ligotimegps
 
-Supported python versions: 2.7, 3.4+.
-
 ^^^^^
 Conda
 ^^^^^
@@ -45,8 +38,6 @@ Conda
 .. code-block:: bash
 
     conda install -c conda-forge ligotimegps
-
-Supported python versions: 2.7, 3.5+.
 
 .. automodapi:: ligotimegps
    :no-heading:
@@ -58,4 +49,4 @@ Support
 -------
 
 To ask a question, report an issue, or suggest a change, please
-`open a ticket on GitHub <https://github.com/gwpy/ligotimegps/issues/>`_.
+`open a ticket on GitLab <https://gitlab.com/gwpy/ligotimegps/-/issues/>`_.
