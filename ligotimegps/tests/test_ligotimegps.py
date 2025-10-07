@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C)  Cardiff University (2017-2021)
 #
 # This file is part of ligotimegps.
@@ -26,7 +25,7 @@ from ligotimegps import LIGOTimeGPS
 def assert_almost_equal(a, b, places=7):  # pragma: no cover
     if round(abs(a - b), places) == 0:
         return
-    raise AssertionError('{} != {} within {} places'.format(a, b, places))
+    raise AssertionError(f"{a} != {b} within {places} places")
 
 
 @pytest.mark.parametrize(("value", "sec", "nanosec"), (
@@ -65,9 +64,9 @@ def test_copy():
     assert b is not a
 
 
-@pytest.mark.parametrize('input_, errstr', [
-    ('test', 'invalid literal for LIGOTimeGPS: test'),
-    (None, 'cannot convert None (NoneType) to LIGOTimeGPS'),
+@pytest.mark.parametrize("input_, errstr", [
+    ("test", "invalid literal for LIGOTimeGPS: test"),
+    (None, "cannot convert None (NoneType) to LIGOTimeGPS"),
 ])
 def test_creation_errors(input_, errstr):
     with pytest.raises(TypeError) as err:
@@ -289,7 +288,7 @@ def test_abs():
 
 
 def test_infinity():
-    assert LIGOTimeGPS(1) < float('inf')
-    assert LIGOTimeGPS(1) > -float('inf')
-    assert LIGOTimeGPS(1) != float('inf')
-    assert LIGOTimeGPS(1) != -float('inf')
+    assert LIGOTimeGPS(1) < float("inf")
+    assert LIGOTimeGPS(1) > -float("inf")
+    assert LIGOTimeGPS(1) != float("inf")
+    assert LIGOTimeGPS(1) != -float("inf")

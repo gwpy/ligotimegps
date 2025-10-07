@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C)  Kipp Cannon (2010-2016)
 #                Cardiff University (2017-2021)
 #

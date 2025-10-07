@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C)  Kipp Cannon (2010-2016)
 #                Cardiff University (2017-2021)
 #
@@ -32,13 +31,13 @@ from decimal import Decimal
 try:
     from ._version import version as __version__
 except ModuleNotFoundError:  # development mode
-    __version__ = ''
+    __version__ = ""
 
-__all__ = ['LIGOTimeGPS']
+__all__ = ["LIGOTimeGPS"]
 
 
 @total_ordering
-class LIGOTimeGPS(object):
+class LIGOTimeGPS:
     """An object for storing times with nanosecond resolution
 
     Internally the time is represented as a signed integer `gpsSeconds` part
@@ -79,6 +78,7 @@ class LIGOTimeGPS(object):
     >>> LIGOTimeGPS("-1.2")
     LIGOTimeGPS(-2, 800000000)
     """
+
     def __init__(self, seconds, nanoseconds=0):
         """Create a LIGOTimeGPS instance
         """
@@ -93,12 +93,11 @@ class LIGOTimeGPS(object):
                 try:
                     seconds = str(Decimal(seconds))
                 except ArithmeticError:
-                    raise TypeError("invalid literal for {0}: {1}".format(
-                       type(self).__name__, seconds))
+                    raise TypeError(f"invalid literal for {type(self).__name__}: {seconds}")
                 sign = -1 if seconds.startswith("-") else +1
                 if "." in seconds:
                     seconds, ns = seconds.split(".")
-                    ns = sign * int(ns.ljust(9, '0'))
+                    ns = sign * int(ns.ljust(9, "0"))
                 else:
                     ns = 0
                 seconds = int(seconds)
@@ -108,8 +107,8 @@ class LIGOTimeGPS(object):
                 nanoseconds += seconds.gpsNanoSeconds
                 seconds = seconds.gpsSeconds
             else:
-                raise TypeError("cannot convert {0!r} ({0.__class__.__name__})"
-                                " to {1.__name__}".format(seconds, type(self)))
+                raise TypeError(f"cannot convert {seconds!r} ({seconds.__class__.__name__})"
+                                f" to {type(self).__name__}")
         self._seconds = seconds + int(nanoseconds // 1000000000)
         self._nanoseconds = int(nanoseconds % 1000000000)
 
@@ -192,9 +191,7 @@ class LIGOTimeGPS(object):
             return False
         if not isinstance(other, LIGOTimeGPS):
             other = LIGOTimeGPS(other)
-        if self._seconds < other._seconds:
-            return True
-        elif (self._seconds == other._seconds and
+        if self._seconds < other._seconds or (self._seconds == other._seconds and
               self._nanoseconds < other._nanoseconds):
             return True
         return False
@@ -217,10 +214,9 @@ class LIGOTimeGPS(object):
     def __round__(self, n=0):
         if n == 0 and self.nanoseconds >= 5e8:
             return type(self)(self._seconds+1)
-        elif n == 0:
+        if n == 0:
             return type(self)(self._seconds)
-        else:
-            return type(self)(self._seconds, round(self._nanoseconds, -9 + n))
+        return type(self)(self._seconds, round(self._nanoseconds, -9 + n))
 
     def __add__(self, other):
         """Add a value to a `LIGOTimeGPS`
