@@ -77,21 +77,51 @@ omit = [
 # print report with one decimal point
 precision = 1
 
-[tool.flake8]
-exclude = [
-    "__pycache__",
-    ".eggs/",
-    ".git/",
-    "docs/",
-    "ligotimegps/_version.py",
-    "venv/",
-]
-
 [tool.pytest.ini_options]
 addopts = "-r a --color=yes"
 filterwarnings = [
     "error",
     "ignore:Using or importing the ABCs",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+  "ANN003",  # type annotations for **kwargs
+  "D203",  # blank line before class docstring
+  "D213",  # docstring summary on second line
+  "D413",  # blank line after last section
+  "ICN001",  # unconventional import alias
+  "PLC0415",  # import outside top level
+  "PLR0913",  # too many arguments
+  "SIM108",  # if-else instead of ternary if
+  "TID252",  # relative imports
+]
+# allow 'mock_...' variables to go unused in tests
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?)|mock_.*)$"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+  "F401",  # unused-import
+  "F403",  # undefined-local-with-import-star
+  "I001",  # import order
+]
+"*/tests/*" = [
+  "ANN",  # type annotations
+  "B904",  # raise from
+  "EM101",  # string literal in exception
+  "PLR2004",  # magic value used in comparison
+  "S101",  # assert
+]
+"docs/*" = [
+  "A",  # builtins
+  "ANN",  # type annotations
+  "D",  # docstrings
+  "INP001",  # implicit namespace package
 ]
 
 [tool.setuptools]
