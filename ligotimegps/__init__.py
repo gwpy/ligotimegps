@@ -24,7 +24,7 @@ The code provided here is much slower than the C-implementation provided
 by LAL, so if you really care about performance, don't use this module.
 """
 
-from math import (modf, log, isinf)
+from math import (modf, log, isinf, log2)
 from functools import total_ordering
 from decimal import Decimal
 
@@ -288,7 +288,7 @@ class LIGOTimeGPS:
 
         slo = seconds % 131072
         shi = seconds - slo
-        olo = other % 2**(int(log(other, 2)) - 26) if other else 0
+        olo = other % 2**(int(log2(other)) - 26) if other else 0
         ohi = other - olo
 
         nanoseconds *= float(other)
