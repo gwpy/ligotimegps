@@ -137,7 +137,7 @@ class LIGOTimeGPS:
         sign = -1 if seconds_str.startswith("-") else +1
         if "." in seconds_str:
             sec_str, ns_str = seconds_str.split(".")
-            ns_val = sign * int(ns_str.ljust(9, "0"))
+            ns_val = sign * int(ns_str.ljust(9, "0")[:9])
         else:
             sec_str = seconds_str
             ns_val = 0

@@ -44,6 +44,13 @@ from .. import LIGOTimeGPS
         765432100,
         id="high-precision-str",
     ),
+    # overly precise string (rounded)
+    pytest.param(
+        ("1.2345678987654321987654321e9",),
+        1234567898,
+        765432198,
+        id="overly-precise-str",
+    ),
 ])
 def test_creation(value, sec, nanosec):
     """Test `LIGOTimeGPS` creation."""
