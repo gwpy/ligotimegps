@@ -23,6 +23,7 @@ release = VERSION
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "myst_parser",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
     "sphinx_automodapi.automodapi",
@@ -82,3 +83,8 @@ intersphinx_mapping = {
 # Don't inherit in automodapi
 numpydoc_show_class_members = False
 automodapi_inherited_members = False
+
+# myst_parser
+myst_enable_extensions = [
+    "attrs_block",
+]
