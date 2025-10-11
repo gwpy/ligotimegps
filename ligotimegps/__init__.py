@@ -31,6 +31,6 @@ from .protocol import LIGOTimeGPSLike
 try:
     from ._version import version as __version__
 except ModuleNotFoundError:  # pragma: no cover
-    __version__ = ""
+    __version__ = "dev"
 
 __author__ = "Duncan Macleod <macleoddm@cardiff.ac.uk>"

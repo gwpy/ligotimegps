@@ -45,6 +45,14 @@ Conda
    :no-inheritance-diagram:
    :headings: =-
 
+Project Information
+-------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   changelog
+
 Support
 -------
 
